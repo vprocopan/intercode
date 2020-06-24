@@ -1,0 +1,1 @@
+·ò^<?php exit; ?>a:1:{s:7:"content";a:6:{s:13:"2019vprocopan";s:7:"/themes";s:10:"storefront";s:7:"/themes";s:5:"talon";s:7:"/themes";s:14:"twentynineteen";s:7:"/themes";s:15:"twentyseventeen";s:7:"/themes";s:12:"twentytwenty";s:7:"/themes";}}

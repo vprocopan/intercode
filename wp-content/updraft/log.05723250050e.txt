@@ -1,0 +1,288 @@
+0000.002 (0) Opened log file at time: Tue, 16 Jun 2020 03:15:54 +0000 on https://192.168.0.16
+0000.044 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.16.25 WP: 5.4.2 PHP: 7.3.14-1~deb10u1 (apache2handler, Linux raspberrypi 4.19.118+ #1311 Mon Apr 27 14:16:15 BST 2020 armv6l) MySQL: 10.3.22-MariaDB-0+deb10u1 WPLANG: en_US Server: Apache/2.4.38 (Raspbian) safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 5.2M | 4M) multisite: N openssl: OpenSSL 1.1.1d  10 Sep 2019 mcrypt: N LANG: C ZipArchive::addFile: N
+0000.068 (0) Free space on disk containing Updraft's temporary directory: 7114.9 MB
+0000.118 (0) Tasks: Backup files: 1 (schedule: unset) Backup DB: 1 (schedule: unset)
+0000.166 (0) Semaphore (fd, wp_options) being initialised
+0000.240 (0) Requesting semaphore lock (fd) (apparently not via scheduler)
+0000.315 (0) Set semaphore last lock (fd) time to 2020-06-16 03:15:55
+0000.340 (0) Semaphore lock (fd) complete
+0000.429 (0) Backup run: resumption=0, nonce=05723250050e, file_nonce=05723250050e begun at=1592277354 (1s ago), job type=backup
+0000.473 (0) Scheduling a resumption (1) after 300 seconds (1592277655) in case this run gets aborted
+0001.686 (0) Checking if we have a zip executable available
+0002.839 (0) Testing: /usr/bin/zip
+0002.995 (0) Output: zip warning: binziptest/test.zip not found or empty
+0003.035 (0) Output: adding: binziptest/subdir1/	(in=0) (out=0) (stored 0%)
+0003.095 (0) Output: adding: binziptest/subdir1/subdir2/	(in=0) (out=0) (stored 0%)
+0003.130 (0) Output: adding: binziptest/subdir1/subdir2/test.html	(in=131) (out=107) (deflated 18%)
+0003.160 (0) Output: total bytes=131, compressed=107 -> 18% savings
+0003.290 (0) Output: adding: binziptest/subdir1/subdir2/test2.html	(in=138) (out=113) (deflated 18%)
+0003.326 (0) Output: total bytes=269, compressed=220 -> 18% savings
+0003.508 (0) Working binary zip found: /usr/bin/zip
+0003.649 (0) Zip engine: found/will use a binary zip: /usr/bin/zip
+0003.680 (0) Creation of backups of directories: beginning
+0003.834 (0) Beginning creation of dump of plugins (split every: 400 MB)
+0008.423 (0) Total entities for the zip file: 645 directories, 3741 files (0 skipped as non-modified), 60.9 MB
+0008.478 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 2.0 seconds have passed since the last write (0 MB, 1 (1) files added so far); re-opening (prior size: 0 KB)
+0009.354 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: size is now: 0.10 MB
+0009.592 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 100 files added (on-disk size: 141.4 KB)
+0009.811 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 200 files added (on-disk size: 141.4 KB)
+0010.135 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 300 files added (on-disk size: 141.4 KB)
+0010.352 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 400 files added (on-disk size: 141.4 KB)
+0010.577 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 500 files added (on-disk size: 141.4 KB)
+0010.607 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (20.1 MB, 3741 files batched, 501 (502) added so far); re-opening (prior size: 141.4 KB)
+0040.485 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: size is now: 5.80 MB
+0040.751 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 600 files added (on-disk size: 5917.9 KB)
+0040.968 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 700 files added (on-disk size: 5917.9 KB)
+0041.187 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 800 files added (on-disk size: 5917.9 KB)
+0041.403 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 900 files added (on-disk size: 5917.9 KB)
+0041.619 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 1000 files added (on-disk size: 5917.9 KB)
+0041.650 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (2.7 MB, 3741 files batched, 501 (1003) added so far); re-opening (prior size: 5917.9 KB)
+0059.716 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 1100 files added (on-disk size: 6864.8 KB)
+0061.139 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 1200 files added (on-disk size: 6864.8 KB)
+0061.360 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 1300 files added (on-disk size: 6864.8 KB)
+0061.578 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 1400 files added (on-disk size: 6864.8 KB)
+0061.794 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 1500 files added (on-disk size: 6864.8 KB)
+0061.825 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (2.5 MB, 3741 files batched, 501 (1504) added so far); re-opening (prior size: 6864.8 KB)
+0066.681 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 1600 files added (on-disk size: 7799.3 KB)
+0067.172 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 1700 files added (on-disk size: 7799.3 KB)
+0067.598 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 1800 files added (on-disk size: 7799.3 KB)
+0067.814 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 1900 files added (on-disk size: 7799.3 KB)
+0068.029 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 2000 files added (on-disk size: 7799.3 KB)
+0068.063 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (9.3 MB, 3741 files batched, 501 (2005) added so far); re-opening (prior size: 7799.3 KB)
+0099.945 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: size is now: 11.20 MB
+0100.184 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 2100 files added (on-disk size: 11502.9 KB)
+0100.413 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 2200 files added (on-disk size: 11502.9 KB)
+0102.167 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 2300 files added (on-disk size: 11502.9 KB)
+0102.253 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 2.0 seconds have passed since the last write (3.6 MB, 327 (2332) files added so far); re-opening (prior size: 11502.9 KB)
+0127.252 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 2400 files added (on-disk size: 12834.6 KB)
+0127.497 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 2500 files added (on-disk size: 12834.6 KB)
+0127.713 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 2600 files added (on-disk size: 12834.6 KB)
+0127.927 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 2700 files added (on-disk size: 12834.6 KB)
+0128.146 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 2800 files added (on-disk size: 12834.6 KB)
+0128.235 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (3.5 MB, 3741 files batched, 501 (2833) added so far); re-opening (prior size: 12834.6 KB)
+0156.643 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 2900 files added (on-disk size: 14107.1 KB)
+0156.876 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 3000 files added (on-disk size: 14107.1 KB)
+0157.103 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 3100 files added (on-disk size: 14107.1 KB)
+0157.331 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 3200 files added (on-disk size: 14107.1 KB)
+0157.564 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 3300 files added (on-disk size: 14107.1 KB)
+0157.659 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (11.7 MB, 3741 files batched, 501 (3334) added so far); re-opening (prior size: 14107.1 KB)
+0210.068 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: size is now: 17.70 MB
+0210.466 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 3400 files added (on-disk size: 18163.3 KB)
+0212.274 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 2.0 seconds have passed since the last write (5 MB, 100 (3434) files added so far); re-opening (prior size: 18163.3 KB)
+0249.970 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 3500 files added (on-disk size: 19867.7 KB)
+0250.230 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 3600 files added (on-disk size: 19867.7 KB)
+0250.573 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip.tmp: 3700 files added (on-disk size: 19867.7 KB)
+0273.084 (0) The time we have been running (273) is approaching the resumption interval (300) - increasing resumption interval to 303
+0273.149 (0) The scheduled resumption is within 45 seconds - will reschedule
+0273.199 (0) Rescheduling resumption 1: moving to 348 seconds from now (1592277975)
+0273.270 (0) To decrease the likelihood of overlaps, increasing resumption interval to: 303 + 45 = 348
+0279.301 (0) Created plugins zip (0) - 20625.9 KB in 275.4 s (74.9 KB/s) (sha1: 65c7f324d1c67aa1e3bdf4bd42d31e72da174565, sha256: fe820c6d867b32bff270d9e3bf6a28157ba549c687774863cf080a37078fe2f6)
+0279.364 (0) Beginning creation of dump of themes (split every: 400 MB)
+0284.338 (0) Total entities for the zip file: 50 directories, 212 files (0 skipped as non-modified), 4 MB
+0284.558 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-themes.zip.tmp: 100 files added (on-disk size: 0 KB)
+0284.782 (0) Zip: backup_2020-06-16-0615_World_of_Technology_05723250050e-themes.zip.tmp: 200 files added (on-disk size: 0 KB)
+0290.444 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-themes.zip.tmp: size is now: 2.20 MB
+0292.293 (0) Created themes zip (0) - 2220.4 KB in 8.3 s (267.8 KB/s) (sha1: dc63e30967cd090e4b2e9bc0d53ab9cec74fb4e3, sha256: 18bcfed3a4194502d76d7c2d1a2cfaeedd0b5b539be6ed342572b30b382fa268)
+0293.990 (0) Exclusion option setting (uploads): backup*,*backups,backwpup*,wp-clone,snapshots
+0294.022 (0) Looking for candidates to backup in: /var/www/html/wp-content/uploads
+0294.059 (0) finding files: 2019: adding to list (1)
+0294.092 (0) finding files: 2020: adding to list (2)
+0294.132 (0) Beginning creation of dump of uploads (split every: 400 MB)
+0294.259 (0) Total entities for the zip file: 4 directories, 5 files (0 skipped as non-modified), 0.3 MB
+0294.523 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-uploads.zip.tmp: size is now: 0.30 MB
+0294.802 (0) Created uploads zip (0) - 296.4 KB in 0.6 s (486.1 KB/s) (sha1: e13a11d188ea2cc78c5c95927dbfce9781e297ac, sha256: ea85ecdb71a6558a763bbf4b8c20d0fbc10e74e5f1d904ff6ed43cc7c640010f)
+0296.452 (0) Beginning backup of other directories found in the content directory (index: 0)
+0296.631 (0) Exclusion option setting (others): upgrade,cache,updraft,backup*,*backups,mysql.sql,debug.log
+0296.691 (0) Looking for candidates to backup in: /var/www/html/wp-content
+0296.745 (0) finding files: updraft: skipping: this is the updraft directory
+0296.790 (0) finding files: wflogs: adding to list (1)
+0296.820 (0) finding files: themes: skipping: this is the themes directory
+0296.850 (0) finding files: upgrade: skipping: excluded by options
+0296.878 (0) finding files: plugins: skipping: this is the plugins directory
+0296.921 (0) finding files: uploads: skipping: this is the uploads directory
+0296.950 (0) finding files: index.php: adding to list (2)
+0297.048 (0) Total entities for the zip file: 1 directories, 10 files (0 skipped as non-modified), 1.3 MB
+0300.742 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-others.zip.tmp: size is now: 0.50 MB
+0309.293 (0) Created others zip (0) - 483.4 KB in 12.3 s (39.3 KB/s) (sha1: 8fd7a16957149d277359ae4892476a1532826731, sha256: a8c779c7dab45be7acebda20cc91351c3767fc11e923816963ff08953a0b7f42)
+0309.517 (0) Saving backup status to database (elements: 8)
+0309.613 (0) Beginning creation of database dump (WordPress DB)
+0309.791 (0) Testing potential mysqldump binary: /usr/bin/mysqldump
+0315.313 (0) Output: /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;\n/*!40103 SET TIME_ZONE='+00:00' */;\n/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;\n/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;\n/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;\n/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;\nDROP TABLE IF EXISTS `wp_options`;\n/*!40101 SET @saved_cs_client     = @@character_set_client */;\n/*!40101 SET character_set_client = utf8 */;\nCRE (truncated - 1219 bytes total)
+0315.401 (0) Working binary mysqldump found: /usr/bin/mysqldump
+0315.585 (0) Table wp_options: Total expected rows (approximate): 239
+0315.971 (0) Table wp_options: Total rows added: 235 in 0.34 seconds
+0316.035 (0) Table wp_options: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_options.table.gz - 17.7 KB)
+0316.141 (0) Table wp_users: Total expected rows (approximate): 1
+0316.197 (0) Table wp_users: Total rows added: 2 in 0.03 seconds
+0316.223 (0) Table wp_users: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_users.table.gz - 0.7 KB)
+0316.335 (0) Table wp_usermeta: Total expected rows (approximate): 35
+0316.395 (0) Table wp_usermeta: Total rows added: 35 in 0.04 seconds
+0316.428 (0) Table wp_usermeta: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_usermeta.table.gz - 1.4 KB)
+0316.529 (0) Table wp_commentmeta: Total expected rows (approximate): 0
+0316.573 (0) Table wp_commentmeta: Total rows added: 0 in 0.02 seconds
+0316.600 (0) Table wp_commentmeta: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_commentmeta.table.gz - 0.4 KB)
+0319.907 (0) Table wp_comments: Total expected rows (approximate): 0
+0321.686 (0) Table wp_comments: Total rows added: 1 in 0.10 seconds
+0321.784 (0) Table wp_comments: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_comments.table.gz - 0.7 KB)
+0323.486 (0) The time we have been running (323.3) is approaching the resumption interval (348) - increasing resumption interval to 354
+0323.664 (0) Table wp_links: Total expected rows (approximate): 0
+0323.740 (0) Table wp_links: Total rows added: 0 in 0.04 seconds
+0323.773 (0) Table wp_links: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_links.table.gz - 0.4 KB)
+0323.933 (0) Table wp_postmeta: Total expected rows (approximate): 33
+0324.028 (0) Table wp_postmeta: Total rows added: 35 in 0.06 seconds
+0324.061 (0) Table wp_postmeta: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_postmeta.table.gz - 1.3 KB)
+0324.169 (0) The time we have been running (324.1) is approaching the resumption interval (354) - increasing resumption interval to 355
+0324.304 (0) Table wp_posts: Total expected rows (approximate): 15
+0324.513 (0) Table wp_posts: Total rows added: 15 in 0.16 seconds
+0324.629 (0) Table wp_posts: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_posts.table.gz - 8.8 KB)
+0324.783 (0) Table wp_term_relationships: Total expected rows (approximate): 5
+0324.877 (0) Table wp_term_relationships: Total rows added: 5 in 0.05 seconds
+0324.905 (0) Table wp_term_relationships: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_term_relationships.table.gz - 0.4 KB)
+0329.648 (0) Table wp_term_taxonomy: Total expected rows (approximate): 0
+0332.986 (0) Table wp_term_taxonomy: Total rows added: 1 in 0.04 seconds
+0336.141 (0) Table wp_term_taxonomy: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_term_taxonomy.table.gz - 0.4 KB)
+0336.375 (0) The time we have been running (336.2) is approaching the resumption interval (355) - increasing resumption interval to 367
+0336.457 (0) Table wp_termmeta: Total expected rows (approximate): 0
+0336.501 (0) Table wp_termmeta: Total rows added: 0 in 0.02 seconds
+0336.526 (0) Table wp_termmeta: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_termmeta.table.gz - 0.4 KB)
+0336.612 (0) Table wp_terms: Total expected rows (approximate): 0
+0336.661 (0) Table wp_terms: Total rows added: 1 in 0.03 seconds
+0336.687 (0) Table wp_terms: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_terms.table.gz - 0.4 KB)
+0336.772 (0) Table wp_wfblockediplog: Total expected rows (approximate): 0
+0336.816 (0) Table wp_wfblockediplog: Total rows added: 0 in 0.02 seconds
+0336.842 (0) Table wp_wfblockediplog: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfblockediplog.table.gz - 0.3 KB)
+0336.931 (0) Table wp_wfblocks7: Total expected rows (approximate): 0
+0336.977 (0) Table wp_wfblocks7: Total rows added: 0 in 0.02 seconds
+0337.002 (0) Table wp_wfblocks7: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfblocks7.table.gz - 0.4 KB)
+0337.073 (0) The time we have been running (337) is approaching the resumption interval (367) - increasing resumption interval to 368
+0337.162 (0) Table wp_wfconfig: Total expected rows (approximate): 242
+0338.925 (0) Table wp_wfconfig: Total rows added: 242 in 0.22 seconds
+0338.961 (0) Table wp_wfconfig: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfconfig.table.gz - 18.2 KB)
+0339.053 (0) The time we have been running (339) is approaching the resumption interval (368) - increasing resumption interval to 369
+0339.139 (0) Table wp_wfcrawlers: Total expected rows (approximate): 0
+0339.184 (0) Table wp_wfcrawlers: Total rows added: 0 in 0.02 seconds
+0339.210 (0) Table wp_wfcrawlers: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfcrawlers.table.gz - 0.3 KB)
+0339.298 (0) The time we have been running (339.2) is approaching the resumption interval (369) - increasing resumption interval to 370
+0339.381 (0) Table wp_wffilechanges: Total expected rows (approximate): 0
+0339.425 (0) Table wp_wffilechanges: Total rows added: 0 in 0.02 seconds
+0339.451 (0) Table wp_wffilechanges: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wffilechanges.table.gz - 0.3 KB)
+0339.535 (0) Table wp_wffilemods: Total expected rows (approximate): 0
+0339.581 (0) Table wp_wffilemods: Total rows added: 0 in 0.02 seconds
+0339.607 (0) Table wp_wffilemods: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wffilemods.table.gz - 0.4 KB)
+0339.693 (0) Table wp_wfhits: Total expected rows (approximate): 6
+0339.774 (0) Table wp_wfhits: Total rows added: 6 in 0.05 seconds
+0339.800 (0) Table wp_wfhits: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfhits.table.gz - 0.8 KB)
+0339.884 (0) Table wp_wfhoover: Total expected rows (approximate): 0
+0339.928 (0) Table wp_wfhoover: Total rows added: 0 in 0.02 seconds
+0339.954 (0) Table wp_wfhoover: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfhoover.table.gz - 0.3 KB)
+0340.040 (0) Table wp_wfissues: Total expected rows (approximate): 0
+0340.086 (0) Table wp_wfissues: Total rows added: 0 in 0.02 seconds
+0340.112 (0) Table wp_wfissues: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfissues.table.gz - 0.4 KB)
+0340.182 (0) The time we have been running (340.1) is approaching the resumption interval (370) - increasing resumption interval to 371
+0340.269 (0) Table wp_wfknownfilelist: Total expected rows (approximate): 0
+0340.312 (0) Table wp_wfknownfilelist: Total rows added: 0 in 0.02 seconds
+0340.339 (0) Table wp_wfknownfilelist: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfknownfilelist.table.gz - 0.3 KB)
+0340.426 (0) Table wp_wflivetraffichuman: Total expected rows (approximate): 0
+0340.470 (0) Table wp_wflivetraffichuman: Total rows added: 0 in 0.02 seconds
+0340.495 (0) Table wp_wflivetraffichuman: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wflivetraffichuman.table.gz - 0.3 KB)
+0340.580 (0) Table wp_wflocs: Total expected rows (approximate): 1
+0340.631 (0) Table wp_wflocs: Total rows added: 2 in 0.03 seconds
+0340.658 (0) Table wp_wflocs: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wflocs.table.gz - 0.5 KB)
+0340.759 (0) Table wp_wflogins: Total expected rows (approximate): 6
+0340.840 (0) Table wp_wflogins: Total rows added: 6 in 0.05 seconds
+0342.591 (0) Table wp_wflogins: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wflogins.table.gz - 0.6 KB)
+0345.990 (0) The time we have been running (344.3) is approaching the resumption interval (371) - increasing resumption interval to 375
+0346.105 (0) Table wp_wfls_2fa_secrets: Total expected rows (approximate): 1
+0346.224 (0) Table wp_wfls_2fa_secrets: Total rows added: 1 in 0.04 seconds
+0347.811 (0) Table wp_wfls_2fa_secrets: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfls_2fa_secrets.table.gz - 0.5 KB)
+0347.924 (0) The time we have been running (347.9) is approaching the resumption interval (375) - increasing resumption interval to 378
+0348.007 (0) Table wp_wfls_settings: Total expected rows (approximate): 17
+0348.060 (0) Table wp_wfls_settings: Total rows added: 19 in 0.03 seconds
+0348.087 (0) Table wp_wfls_settings: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfls_settings.table.gz - 0.8 KB)
+0348.163 (0) The time we have been running (348.1) is approaching the resumption interval (378) - increasing resumption interval to 379
+0348.245 (0) Table wp_wfnotifications: Total expected rows (approximate): 0
+0348.290 (0) Table wp_wfnotifications: Total rows added: 0 in 0.02 seconds
+0348.315 (0) Table wp_wfnotifications: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfnotifications.table.gz - 0.3 KB)
+0348.402 (0) Table wp_wfpendingissues: Total expected rows (approximate): 0
+0348.447 (0) Table wp_wfpendingissues: Total rows added: 0 in 0.02 seconds
+0348.473 (0) Table wp_wfpendingissues: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfpendingissues.table.gz - 0.4 KB)
+0348.560 (0) Table wp_wfreversecache: Total expected rows (approximate): 1
+0348.609 (0) Table wp_wfreversecache: Total rows added: 2 in 0.03 seconds
+0348.635 (0) Table wp_wfreversecache: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfreversecache.table.gz - 0.4 KB)
+0348.721 (0) Table wp_wfsnipcache: Total expected rows (approximate): 0
+0350.322 (0) Table wp_wfsnipcache: Total rows added: 0 in 0.04 seconds
+0350.347 (0) Table wp_wfsnipcache: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfsnipcache.table.gz - 0.4 KB)
+0350.431 (0) The time we have been running (350.4) is approaching the resumption interval (379) - increasing resumption interval to 381
+0350.517 (0) Table wp_wfstatus: Total expected rows (approximate): 11
+0350.570 (0) Table wp_wfstatus: Total rows added: 11 in 0.03 seconds
+0350.596 (0) Table wp_wfstatus: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfstatus.table.gz - 0.8 KB)
+0350.680 (0) Table wp_wftrafficrates: Total expected rows (approximate): 0
+0350.725 (0) Table wp_wftrafficrates: Total rows added: 0 in 0.02 seconds
+0350.750 (0) Table wp_wftrafficrates: finishing file (backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wftrafficrates.table.gz - 0.3 KB)
+0350.810 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_options.table.gz (1/33): adding to final database dump
+0350.902 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_users.table.gz (2/33): adding to final database dump
+0350.936 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_usermeta.table.gz (3/33): adding to final database dump
+0350.961 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_commentmeta.table.gz (4/33): adding to final database dump
+0350.989 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_comments.table.gz (5/33): adding to final database dump
+0351.014 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_links.table.gz (6/33): adding to final database dump
+0351.039 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_postmeta.table.gz (7/33): adding to final database dump
+0351.070 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_posts.table.gz (8/33): adding to final database dump
+0351.125 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_term_relationships.table.gz (9/33): adding to final database dump
+0351.151 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_term_taxonomy.table.gz (10/33): adding to final database dump
+0351.185 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_termmeta.table.gz (11/33): adding to final database dump
+0351.210 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_terms.table.gz (12/33): adding to final database dump
+0351.235 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfblockediplog.table.gz (13/33): adding to final database dump
+0351.260 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfblocks7.table.gz (14/33): adding to final database dump
+0351.285 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfconfig.table.gz (15/33): adding to final database dump
+0351.466 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfcrawlers.table.gz (16/33): adding to final database dump
+0351.490 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wffilechanges.table.gz (17/33): adding to final database dump
+0351.514 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wffilemods.table.gz (18/33): adding to final database dump
+0351.538 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfhits.table.gz (19/33): adding to final database dump
+0351.573 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfhoover.table.gz (20/33): adding to final database dump
+0351.597 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfissues.table.gz (21/33): adding to final database dump
+0351.621 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfknownfilelist.table.gz (22/33): adding to final database dump
+0351.646 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wflivetraffichuman.table.gz (23/33): adding to final database dump
+0351.670 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wflocs.table.gz (24/33): adding to final database dump
+0351.696 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wflogins.table.gz (25/33): adding to final database dump
+0351.723 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfls_2fa_secrets.table.gz (26/33): adding to final database dump
+0351.748 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfls_settings.table.gz (27/33): adding to final database dump
+0351.774 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfnotifications.table.gz (28/33): adding to final database dump
+0351.798 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfpendingissues.table.gz (29/33): adding to final database dump
+0351.822 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfreversecache.table.gz (30/33): adding to final database dump
+0351.846 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfsnipcache.table.gz (31/33): adding to final database dump
+0351.870 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wfstatus.table.gz (32/33): adding to final database dump
+0351.895 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db-table-wp_wftrafficrates.table.gz (33/33): adding to final database dump
+0351.992 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db.gz: finished writing out complete database file (48 KB)
+0352.117 (0) Total database tables backed up: 33 (backup_2020-06-16-0615_World_of_Technology_05723250050e-db.gz, size: 52867, sha1: a04e498b915018a5f560e21972b29a780d5a1542, sha256: 9556de89e9670a6b72d5a9b4e2ec6b24b6b18fd6948c02aafdd6d57640c64468)
+0352.241 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip: plugins: This file has not yet been successfully uploaded: will queue
+0352.266 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-themes.zip: themes: This file has not yet been successfully uploaded: will queue
+0352.290 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-uploads.zip: uploads: This file has not yet been successfully uploaded: will queue
+0352.320 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-others.zip: others: This file has not yet been successfully uploaded: will queue
+0352.353 (0) backup_2020-06-16-0615_World_of_Technology_05723250050e-db.gz: db: This file has not yet been successfully uploaded: will queue
+0352.383 (0) Saving backup history. Total backup size: 23.1 MB
+0352.439 (0) Requesting upload of the files that have not yet been successfully uploaded (5)
+0352.542 (0) Cloud backup selection (1/1): none with instance (1/1) (last)
+0352.566 (0) No remote despatch: user chose no remote backup service
+0352.594 (0) Recording as successfully uploaded: backup_2020-06-16-0615_World_of_Technology_05723250050e-plugins.zip
+0352.645 (0) Recording as successfully uploaded: backup_2020-06-16-0615_World_of_Technology_05723250050e-themes.zip
+0352.694 (0) Recording as successfully uploaded: backup_2020-06-16-0615_World_of_Technology_05723250050e-uploads.zip
+0352.742 (0) Recording as successfully uploaded: backup_2020-06-16-0615_World_of_Technology_05723250050e-others.zip
+0352.794 (0) Recording as successfully uploaded: backup_2020-06-16-0615_World_of_Technology_05723250050e-db.gz
+0352.891 (0) Retain: beginning examination of existing backup sets; user setting: retain_files=5, retain_db=5
+0352.923 (0) Number of backup sets in history: 1; groups (db): 1
+0352.946 (0) Examining (for databases) backup set with group_id=0, nonce=05723250050e, datestamp=1592277354 (Jun 16 2020 03:15:54)
+0352.970 (0) This backup set is the backup set just made, so will not be deleted.
+0352.970 (0) Number of backup sets in history: 1; groups (files): 1
+0352.993 (0) Examining (for files) backup set with nonce=05723250050e, datestamp=1592277354 (Jun 16 2020 03:15:54)
+0352.993 (0) This backup set is the backup set just made, so will not be deleted.
+0353.016 (0) This backup set is the backup set just made, so will not be deleted.
+0353.020 (0) This backup set is the backup set just made, so will not be deleted.
+0353.024 (0) This backup set is the backup set just made, so will not be deleted.
+0353.028 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0353.051 (0) Retain: saving new backup history (sets now: 1) and finishing retain operation
+0353.110 (0) Resume backup (05723250050e, 0): finish run
+0353.201 (0) Decremented the semaphore (fd) by 1
+0353.246 (0) Semaphore (fd) unlocked
+0353.278 (0) There were no errors in the uploads, so the 'resume' event (1) is being unscheduled
+0353.406 (0) No email will/can be sent - the user has not configured an email address.
+0355.121 (0) The backup apparently succeeded and is now complete

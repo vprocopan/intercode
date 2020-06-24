@@ -1,0 +1,22 @@
+#RewriteEngine On
+
+# Redirect to HTTPS clients indicating their preference for it
+# Note: this should also send a Vary header, but doesn't due to Apache bug
+#RewriteCond %{HTTP:Upgrade-Insecure-Requests} ^1$
+#RewriteCond %{HTTP:X-Scheme} !https
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R,L]
+
+# BEGIN WordPress
+# The directives (lines) between `BEGIN WordPress` and `END WordPress` are
+# dynamically generated, and should only be modified via WordPress filters.
+# Any changes to the directives between these markers will be overwritten.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress

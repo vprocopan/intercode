@@ -1,0 +1,1 @@
+_ò^<?php exit; ?>a:1:{s:7:"content";s:81:"/home/spiker/www/wp-content/plugins/woocommerce/templates/content-product_cat.php";}
