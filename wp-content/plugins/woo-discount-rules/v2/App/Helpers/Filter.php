@@ -136,6 +136,8 @@ class Filter
      */
     protected function compareWithCustomTaxonomy($product_id, $operation_values, $operation_method, $taxonomy)
     {
+        $product_parent = Woocommerce::getProductParentId($product_id);
+        $product_id = !empty($product_parent) ? $product_parent : $product_id;
         $term_ids = wp_get_post_terms($product_id, $taxonomy, array("fields" => "ids"));
         $is_product_has_term = count(array_intersect($term_ids, $operation_values)) > 0;
         if ('in_list' === $operation_method) {

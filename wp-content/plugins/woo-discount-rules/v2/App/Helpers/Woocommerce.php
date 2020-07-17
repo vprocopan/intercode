@@ -32,6 +32,11 @@ class Woocommerce
         return false;
     }
 
+    static function getConvertedFixedPrice($value, $type = '')
+    {
+        return apply_filters('advanced_woo_discount_rules_converted_currency_value', $value, $type);
+    }
+
     /**
      * Check the order has particular shipping method
      * @param $order
@@ -689,7 +694,7 @@ class Woocommerce
             $line_subtotal = $line_subtotal+$line_subtotal_tax;
         }
 
-        return $line_subtotal;
+        return apply_filters('advanced_woo_discount_rules_line_item_subtotal', $line_subtotal, $cart_item, $tax_display_type);
     }
 
     /**
@@ -1490,7 +1495,7 @@ class Woocommerce
      */
     static function getPriceHtml($product){
         $html = false;
-        if (method_exists('get_price_html')) {
+        if (method_exists($product, 'get_price_html')) {
             $html = $product->get_price_html();
         }
         return apply_filters('advanced_woo_discount_rules_get_price_html', $html, $product);

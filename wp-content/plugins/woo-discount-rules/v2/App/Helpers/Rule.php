@@ -969,7 +969,7 @@ class Rule
         $value = floatval($value);
         switch ($type) {
             case 'fixed_price':
-                $discount = $original_value - $value;
+                $discount = $original_value - self::$woocommerce_helper->getConvertedFixedPrice($value, 'fixed_price');
                 break;
             case 'percentage':
                 if (!empty($value)) {
@@ -978,7 +978,7 @@ class Rule
                 break;
             default:
             case 'flat':
-                $discount = $value;
+                $discount = self::$woocommerce_helper->getConvertedFixedPrice($value, 'flat');
                 break;
         }
         return $discount;
@@ -1005,6 +1005,7 @@ class Rule
      */
     function isCartConditionsPassed($cart)
     {
+        $rule_object = $this;
         /*if (empty($cart)) {
             //if cart is empty then return with false
             return false;
@@ -1013,12 +1014,12 @@ class Rule
         if ($conditions = $this->getConditions()) {
             if (empty($conditions)) {
                 //If the rule has no condition then return true
-                return true;
+                return apply_filters('advanced_woo_discount_rules_is_conditions_passed', true, $rule_object, $this->rule);
             }
             $condition_relationship = $this->getRelationship('condition', 'and');
             $dont_check_condition = apply_filters('advanced_woo_discount_rules_check_condition', false, $cart, $this, $condition_relationship);
             if($dont_check_condition){
-                return true;
+                return apply_filters('advanced_woo_discount_rules_is_conditions_passed', true, $rule_object, $this->rule);
             }
             foreach ($conditions as $condition) {
                 $type = isset($condition->type) ? $condition->type : NULL;
@@ -1066,11 +1067,11 @@ class Rule
                     }
                     //if relationship is "and" and if current condition get fails, no need to check any other conditions provided by admin.just return rule condition failed
                     if (isset($is_condition_passed) && !$is_condition_passed && $condition_relationship == "and") {
-                        return false;
+                        return apply_filters('advanced_woo_discount_rules_is_conditions_passed', false, $rule_object, $this->rule);
                     }
                     //if relationship is "or" and if current condition get pass, no need to check any other conditions provided by admin.just return rule condition passed
                     if (isset($is_condition_passed) &&  $is_condition_passed && $condition_relationship == "or") {
-                        return true;
+                        return apply_filters('advanced_woo_discount_rules_is_conditions_passed', true, $rule_object, $this->rule);
                     }
                     //Check if any conditions fails
                     if (isset($is_condition_passed) && !$is_condition_passed) {
@@ -1080,9 +1081,9 @@ class Rule
             }
         }
         if (in_array(false, $conditions_result)) {
-            return false;
+            return apply_filters('advanced_woo_discount_rules_is_conditions_passed', false, $rule_object, $this->rule);
         }
-        return true;
+        return apply_filters('advanced_woo_discount_rules_is_conditions_passed', true, $rule_object, $this->rule);
     }
 
     /**
@@ -1115,14 +1116,15 @@ class Rule
      */
     function hasConditions()
     {
+        $status = false;
         if (isset($this->rule->conditions)) {
             if (empty($this->rule->conditions) || $this->rule->conditions == '{}' || $this->rule->conditions == '[]') {
-                return false;
+                $status = false;
             } else {
-                return true;
+                $status = true;
             }
         }
-        return false;
+        return apply_filters('advanced_woo_discount_rules_has_rule_conditions', $status, $this->rule);
     }
 
     /**

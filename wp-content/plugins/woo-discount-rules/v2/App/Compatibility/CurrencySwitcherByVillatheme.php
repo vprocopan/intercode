@@ -18,11 +18,11 @@ class CurrencySwitcherByVillatheme extends Base
                 $process_conversion = true;
                 if($process_conversion){
                     $class_exists = false;
-                    if(class_exists('WOOMULTI_CURRENCY_F_Data')){
-                        $setting         = new WOOMULTI_CURRENCY_F_Data();
+                    if(class_exists('\WOOMULTI_CURRENCY_F_Data')){
+                        $setting         = new \WOOMULTI_CURRENCY_F_Data();
                         $class_exists = true;
-                    } elseif(class_exists('WOOMULTI_CURRENCY_Data')){
-                        $setting         = new WOOMULTI_CURRENCY_Data();
+                    } elseif(class_exists('\WOOMULTI_CURRENCY_Data')){
+                        $setting         = new \WOOMULTI_CURRENCY_Data();
                         $class_exists = true;
                     }
                     if($class_exists === true){

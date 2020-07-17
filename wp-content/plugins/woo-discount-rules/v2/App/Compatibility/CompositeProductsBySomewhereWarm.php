@@ -27,6 +27,13 @@ class CompositeProductsBySomewhereWarm extends Base
                 }
                 return $take_count;
             }, 10, 2);
+
+            add_filter('advanced_woo_discount_rules_process_cart_item_for_cheapest_rule', function($take_count, $cart_item){
+                if(isset($cart_item['composite_item']) && !empty($cart_item['composite_item'])){
+                    $take_count = false;
+                }
+                return $take_count;
+            }, 10, 2);
         }
     }
 

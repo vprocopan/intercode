@@ -268,6 +268,10 @@ select.discount_product_option,
 .wdr_price_rule_listing_table_con{
     padding: 0 15px;
 }
+.wdr_woo_discount_header_con.woocommerce-message {
+    display: block !important;
+    opacity: 1 !important;
+}
 
 /*Model Popup*/
 .wdr_woo_discount_header_con .modal,

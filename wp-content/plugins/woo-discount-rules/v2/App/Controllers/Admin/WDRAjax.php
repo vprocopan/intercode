@@ -91,6 +91,8 @@ class WDRAjax extends Base
     public function wdr_ajax_products()
     {
         $query = $this->input->post('query', '');
+        //to disable other search classes
+        remove_all_filters('woocommerce_data_stores');
         $data_store = WC_Data_Store::load('product');
         $ids = $data_store->search_products($query, '', true, false, $this->search_result_limit);
             return array_values(array_map( function ( $post_id ) {
@@ -539,6 +541,7 @@ class WDRAjax extends Base
         $product = self::$woocommerce_helper->getProduct($product);
         $price_html = "<div class='price'></div>";
         $price_html = $manage_discount->getPriceHtml($price_html, $product, $product_qty, true);
-        wp_send_json(array('price_html'=>$price_html));
+        $original_html = self::$woocommerce_helper->getPriceHtml($product);
+        wp_send_json(array('price_html'=>$price_html, 'original_price_html' => $original_html));
     }
 }

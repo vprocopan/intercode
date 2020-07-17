@@ -4,7 +4,7 @@ Donate link: https://flycart.org/
 Tags: woocommerce, coupons, discounts, dynamic pricing, Buy One Get One Free, pricing deals, bulk discount, discount
 Requires at least: 4.4.1
 Tested up to: 5.4
-Stable tag: 1.9.11
+Stable tag: 1.9.12
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -335,6 +335,19 @@ Discount - Enter minimum & Maximum quantity -> Adjustment Type -> Product Discou
 * Dutch Translation - [@mvdburg1971](https://profiles.wordpress.org/mvdburg1971) - Michael van der Burg
 
 == Changelog ==
+
+= 1.9.12 - 29/06/20 =
+* Fix - Dynamic strikeout improvement(strikeout doesn't replace for non matched qty).
+* Fix - Custom taxonomy condition for variable products.
+* Fix - Report for cart discount not showing.
+* Fix - Product doesn't loads based on keyword when WooCommerce Product Search plugin is active.
+* Fix - Coupon doesn't removes for BOGO rule (when disable coupon while rule applied option is enabled).
+* Fix - Error on currency switcher by villatheme.
+* Fix - Set discount value is wrong when rule is marked as exclusive.
+* Fix - Warning on apply BOGO rule.
+* Improvement - Additional events to get discount table manually.
+* Improvement - Composite product compatible improvement.
+* Improvement - CSS override for display switch option in v1.
 
 = 1.9.11 - 17/06/20 =
 * Fix - Custom taxonomy doesn't works with conditions.

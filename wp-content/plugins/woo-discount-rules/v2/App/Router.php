@@ -60,7 +60,7 @@ class Router
          */
         $manage_discount_class = self::$manage_discount = (!empty(self::$manage_discount)) ? self::$manage_discount : new ManageDiscount();
         add_filter('advanced_woo_discount_rules_get_product_discount_price', array(self::$manage_discount, 'calculateProductDiscountPrice'), 100, 3);
-        add_filter('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', array(self::$manage_discount, 'calculateProductDiscountPrice'), 100, 6);
+        add_filter('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', array(self::$manage_discount, 'calculateProductDiscountPrice'), 100, 7);
         //Showing you saved text
         $display_saving_text = $manage_discount_class::$config->getConfig('display_saving_text', 'disabled');
         add_action('woocommerce_checkout_create_order_line_item', array(self::$manage_discount, 'onCreateWoocommerceOrderLineItem'), 10, 4);
@@ -77,6 +77,8 @@ class Router
                 add_action('woocommerce_get_formatted_order_total', array(self::$manage_discount, 'displayTotalSavingsInOrderAfterOrderTotal'), 10,2);
             }
         }
+        add_filter('advanced_woo_discount_rules_get_order_line_item_you_saved_text', array(self::$manage_discount, 'orderSubTotalDiscountDetails'), 10, 3);
+        add_filter('advanced_woo_discount_rules_get_order_total_you_saved_text', array(self::$manage_discount, 'displayTotalSavingsInOrderAfterOrderTotal'), 10,2);
 
         $show_subtotal_promotion = $manage_discount_class::$config->getConfig('show_subtotal_promotion', '');
         if($show_subtotal_promotion == 1){
@@ -163,6 +165,9 @@ class Router
 
             add_action($position_to_show_discount_bar, array(self::$manage_discount, 'showAdvancedTableInPosition'));
 
+            add_action('advanced_woo_discount_rules_load_discount_table', array(self::$manage_discount, 'showBulkTableInPositionManually'), 10);
+            add_action('advanced_woo_discount_rules_load_discount_bar', array(self::$manage_discount, 'showAdvancedTableInPositionManually'), 10);
+
             //Short code manager
             self::$short_code_manager = (!empty(self::$short_code_manager)) ? self::$short_code_manager : new ShortCodeManager();
             add_shortcode('awdr_sale_items_list', array(self::$short_code_manager, 'saleItemsList'));
@@ -174,6 +179,9 @@ class Router
                 }
             }
             add_shortcode('awdr_banner_content', array(self::$short_code_manager, 'bannerContent'));
+
+            // For handling BOGO
+            add_filter('advanced_woo_discount_rules_after_processed_bogo_free_auto_add', array(self::$manage_discount, 'removeThirdPartyCoupon'));
         }
     }
 }

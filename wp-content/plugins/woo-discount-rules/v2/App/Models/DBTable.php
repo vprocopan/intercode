@@ -308,11 +308,9 @@ class DBTable
             //'include_gifted_amount' => false,
             //'include_gifted_qty'    => false,
         ), $params );
-
         if ( empty( $params['from'] ) || empty( $params['to'] ) ) {
             return false;
         }
-
         $summary_components = array();
         if ( $params['include_amount'] ) {
             $summary_components[] = 'rules_stats.discount';
@@ -339,7 +337,6 @@ class DBTable
 			LIMIT %d",
             array( $params['from'], $params['to'], (int) $params['limit'] )
         );
-
         $top = $wpdb->get_col( $query_total );
         if ( empty( $top ) ) {
             return false;
@@ -347,7 +344,6 @@ class DBTable
 
         $placeholders = array_fill( 0, count( $top ), '%d' );
         $placeholders = implode( ', ', $placeholders );
-
         $query = $wpdb->prepare(
             "SELECT DATE(rules_stats.created_at) as date_rep, rules.id AS rule_id, CONCAT('#', rules.id, ' ', rules.title) AS title, SUM({$summary_field}) AS value
 			FROM {$table_items} AS rules LEFT JOIN {$table_stats} AS rules_stats
@@ -391,7 +387,7 @@ class DBTable
      */
     public function updateTable(){
         //Version of currently activated plugin
-        $current_version = '1.9.11';
+        $current_version = '1.9.12';
         //Database version - this may need upgrading.
         $installed_version = get_option('awdr_activity_log_version');
         if( $installed_version != $current_version ){

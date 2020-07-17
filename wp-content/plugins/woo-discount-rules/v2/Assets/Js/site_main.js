@@ -65,6 +65,10 @@
                         success: function (response) {
                             if (response.price_html) {
                                 $price_place.html(response.price_html)
+                            } else {
+                                if(response.original_price_html != undefined){
+                                    $price_place.html(response.original_price_html)
+                                }
                             }
                         },
                         error: function (response) {

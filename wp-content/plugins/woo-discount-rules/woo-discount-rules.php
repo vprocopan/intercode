@@ -5,7 +5,7 @@
  * Description: Simple to complex discount rules for your WooCommerce store. Core package.
  * Author: Flycart Technologies LLP
  * Author URI: https://www.flycart.org
- * Version: 1.9.11
+ * Version: 1.9.12
  * Slug: woo-discount-rules
  * Text Domain: woo-discount-rules
  * Domain Path: /i18n/languages/

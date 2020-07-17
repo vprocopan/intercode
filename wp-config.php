@@ -80,6 +80,9 @@ $table_prefix = 'wp_';
 /*define( 'WP_DEBUG', true );*/
 
 /*define('FORCE_SSL_ADMIN', true);*/
+define( 'DISALLOW_FILE_EDIT', true );
+
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */

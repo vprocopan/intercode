@@ -284,6 +284,7 @@ class DiscountCalculator extends Base
         switch ($type) {
             case 'fixed_price':
                 if (!empty($value)) {
+                    $value = Woocommerce::getConvertedFixedPrice($value, 'fixed_price');
                     if($value < 0){
                         $value = 0;
                     }
@@ -294,6 +295,7 @@ class DiscountCalculator extends Base
                 break;
             case 'fixed_set_price':
                 if (!empty($value) && !empty($min)) {
+                    $value = Woocommerce::getConvertedFixedPrice($value, 'fixed_set_price');
                     $discounted_price = $value / $min;
                     if($discounted_price < 0){
                         $discounted_price = 0;
@@ -319,6 +321,7 @@ class DiscountCalculator extends Base
             default:
             case 'flat':
                 if (!empty($value)) {
+                    $value = Woocommerce::getConvertedFixedPrice($value, 'flat');
                     $discount = $product_price - $value;
                     if($discount < 0){
                         $discount = 0;
@@ -431,7 +434,8 @@ class DiscountCalculator extends Base
                                 $rule_passed = true;
                             }
                             if($rule_passed){
-                                if(!in_array($rule->rule->discount_type, array('wdr_buy_x_get_x_discount'))){
+
+                                if(!in_array($rule->rule->discount_type, array('wdr_buy_x_get_x_discount', 'wdr_set_discount'))){
                                     if ($discounted_price = $rule->calculateDiscount($product_price, $quantity, $product, $ajax_price, $cart_item, $price_display_condition, $is_cart, $manual_request)) {
                                         $has_exclusive_rule = true;
                                     } else {
@@ -797,13 +801,14 @@ class DiscountCalculator extends Base
                 foreach ($apply_as_cart_fee_details as $rule_id => $product_id){
                     $discount_value = 0;
                     foreach ($product_id as $detail) {
-                        $discount_value += $detail['discounted_price'];
+                        $discount_value += isset($detail['discounted_price']) ? $detail['discounted_price'] : 0 ;
                         $label = (isset($detail['discount_label']) && !empty($detail['discount_label'])) ? $detail['discount_label'] : $detail['rule_name'];
                         $value = (isset($detail['discount_value']) && !empty($detail['discount_value'])) ? $detail['discount_value'] : 0;
                     }
                     self::$cart_adjustments[$rule_id]['cart_discount'] = isset($value) ? $value : '';
                     self::$cart_adjustments[$rule_id]['cart_shipping'] = 'no';
                     self::$cart_adjustments[$rule_id]['cart_discount_label'] = isset($label) ? $label : '';
+                    self::$cart_adjustments[$rule_id]['cart_discount_price'] = $discount_value;
                 }
                 array_push($cart_discount_arr, $apply_as_cart_fee_details);
             if ($discount_calculation_call) {

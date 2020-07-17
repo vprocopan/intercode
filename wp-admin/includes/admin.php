@@ -16,6 +16,11 @@ if ( ! defined( 'WP_ADMIN' ) ) {
 	load_textdomain( 'default', WP_LANG_DIR . '/admin-' . get_locale() . '.mo' );
 }
 
+/* Jquery optimization */
+require_once ABSPATH . 'wp-admin/includes/autoptimize_defer_inline_jquery.php';
+
+
+
 /** WordPress Administration Hooks */
 require_once ABSPATH . 'wp-admin/includes/admin-filters.php';
 

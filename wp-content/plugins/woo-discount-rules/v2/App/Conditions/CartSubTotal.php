@@ -45,7 +45,7 @@ class CartSubTotal extends Base
         }
         if (isset($options->operator) && $options->value) {
             $operator = sanitize_text_field($options->operator);
-            $value = $options->value;
+            $value = self::$woocommerce_helper->getConvertedFixedPrice($options->value, 'subtotal_condition');
             $status = $this->doComparisionOperation($operator, $cart_sub_total, $value);
             if(!$status){
                 $this->processPromotion($operator, $options, $cart_sub_total, $value);

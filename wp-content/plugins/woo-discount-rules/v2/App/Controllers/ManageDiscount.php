@@ -204,7 +204,8 @@ class ManageDiscount extends Base
         }
         if ($ajax_price) {
             $price_html = $initial_price_html;
-            if(!$price_html){
+            $quantity = $this->input->post('qty', '');
+            if(!$price_html || empty($quantity)){
                 return false;
             }
         }
@@ -290,6 +291,15 @@ class ManageDiscount extends Base
      * */
     function getPriceHtmlSalePriceAdjustment($price_html, $product, $quantity = 1)
     {
+        if (empty(self::$available_rules)) {
+            return $price_html;
+        }
+        $show_on_sale_badge = self::$config->getConfig('show_on_sale_badge', 'disabled');
+
+        if($show_on_sale_badge != 'at_least_has_any_rules' ){
+            return $price_html;
+        }
+
         $modify_price = apply_filters('advanced_woo_discount_rules_modify_sale_price_adjustment_html', true, $price_html, $product, $quantity);
         if (!$modify_price) {
             return $price_html;
@@ -298,7 +308,7 @@ class ManageDiscount extends Base
         if (is_array($excluded_product_type) && !empty($excluded_product_type)) {
             if (!Woocommerce::productTypeIs($product, $excluded_product_type)) {
                 $sale_price = Woocommerce::getProductSalePrice($product);
-                $regular_price = Woocommerce::getProductRegularPrice($product);
+                $regular_price = Woocommerce::getProductPrice($product);
                 if ($sale_price <= 0) {
                     if($regular_price > 0){
                         $regular_price = get_option('woocommerce_tax_display_shop') == 'excl' ? Woocommerce::getExcludingTaxPrice($product, 1, $regular_price) : Woocommerce::getIncludingTaxPrice($product, 1, $regular_price);
@@ -882,7 +892,10 @@ class ManageDiscount extends Base
                                 $price = self::$calculated_cart_item_discount[$key]['discounted_price'];
                             }
                             $price = apply_filters('advanced_woo_discount_rules_discounted_price_of_cart_item', $price, $cart_item, $cart_object, self::$calculated_cart_item_discount[$key]);
-                            self::$woocommerce_helper->setCartProductPrice($product_obj, $price);
+                            $do_apply_price_rules = apply_filters('advanced_woo_discount_rules_do_apply_price_discount', true, $price, $cart_item, $cart_object, self::$calculated_cart_item_discount[$key]);
+                            if($do_apply_price_rules){
+                                self::$woocommerce_helper->setCartProductPrice($product_obj, $price);
+                            }
 
                         }
                     }
@@ -950,11 +963,10 @@ class ManageDiscount extends Base
     }
 
     /**
-     * Show the bulk table discount message
+     * laod the bulk table discount message manually
      */
-    function showBulkTableInPosition()
+    function showBulkTableInPositionManually($product)
     {
-        global $product;
         if (!empty($product)) {
             $bulk_discounts_ranges = self::$calculator->getDefaultLayoutMessagesByRules($product);
             $override_path = get_theme_file_path('advanced_woo_discount_rules/discount_table.php');
@@ -967,15 +979,36 @@ class ManageDiscount extends Base
     }
 
     /**
+     * Show the bulk table discount message
+     */
+    function showBulkTableInPosition()
+    {
+        global $product;
+        if (!empty($product)) {
+            $this->showBulkTableInPositionManually($product);
+        }
+    }
+
+    /**
+     * load the advanced table discount message manually
+     */
+    function showAdvancedTableInPositionManually($product)
+    {
+        if (!empty($product)) {
+            $bulk_discounts_ranges = self::$calculator->getAdvancedLayoutMessagesByRules($product);
+            $bulk_table_template_path = WDR_PLUGIN_PATH . 'App/Views/Templates/discount_table.php';
+            self::$template_helper->setPath($bulk_table_template_path)->setData(array('ranges' => $bulk_discounts_ranges, 'woocommerce' => self::$woocommerce_helper))->display();
+        }
+    }
+
+    /**
      * Show the advanced table discount message
      */
     function showAdvancedTableInPosition()
     {
         global $product;
         if (!empty($product)) {
-            $bulk_discounts_ranges = self::$calculator->getAdvancedLayoutMessagesByRules($product);
-            $bulk_table_template_path = WDR_PLUGIN_PATH . 'App/Views/Templates/discount_table.php';
-            self::$template_helper->setPath($bulk_table_template_path)->setData(array('ranges' => $bulk_discounts_ranges, 'woocommerce' => self::$woocommerce_helper))->display();
+            $this->showAdvancedTableInPositionManually($product);
         }
     }
 
@@ -991,7 +1024,7 @@ class ManageDiscount extends Base
         $model = new DBTable();
         $applied_rules = array();
         if (!empty(self::$calculated_cart_item_discount)) {
-            foreach (self::$calculated_cart_item_discount as $discount) {
+            foreach (self::$calculated_cart_item_discount as $cart_key => $discount) {
                 $product_id = isset($discount['product_id']) ? $discount['product_id'] : 0;
                 if (empty($product_id)) {
                     return false;
@@ -1002,12 +1035,13 @@ class ManageDiscount extends Base
                 $total_discount_details = isset($discount['total_discount_details']) ? $discount['total_discount_details'] : array();
                 $cart_discount_details = isset($discount['cart_discount_details']) ? $discount['cart_discount_details'] : array();
                 if (!empty($total_discount_details)) {
-                    $save_order_item_discounts_array = isset($total_discount_details[$product_id])? $total_discount_details[$product_id]: array();
+                    $save_order_item_discounts_array = isset($total_discount_details[$cart_key])? $total_discount_details[$cart_key]: array();
                 } else {
                     $save_order_item_discounts_array = $cart_discount_details;
                 }
                 if (!empty($save_order_item_discounts_array)) {
                     foreach ($save_order_item_discounts_array as $key => $value) {
+                        $simple_discount = $bulk_discount = $set_discount = $cart_discount = 0;
                         $rule_id = $key;
                         $applied_rules[] = $rule_id;
                         $cart_discount = isset($cart_discount_details[$rule_id]['cart_discount']) ? $cart_discount_details[$rule_id]['cart_discount'] : '0';
@@ -1026,9 +1060,10 @@ class ManageDiscount extends Base
                         foreach ($cart_discount_details as $key => $value) {
                             if (!in_array($key, $applied_rules)) {
                                 $rule_id = $key;
-                                $cart_discount = isset($cart_discount_details[$rule_id]['cart_discount']) ? $cart_discount_details[$rule_id]['cart_discount'] : '';
+                                //$cart_discount = isset($cart_discount_details[$rule_id]['cart_discount']) ? $cart_discount_details[$rule_id]['cart_discount'] : '';
                                 $cart_shipping = (isset($cart_discount_details[$rule_id]['cart_shipping']) && !empty($cart_discount_details[$rule_id]['cart_shipping'])) ? $cart_discount_details[$rule_id]['cart_shipping'] : 'no';
                                 $cart_discount_label = isset($cart_discount_details[$rule_id]['cart_discount_label']) ? $cart_discount_details[$rule_id]['cart_discount_label'] : '';
+                                $cart_discount = isset($cart_discount_details[$rule_id]['cart_discount_price']) ? $cart_discount_details[$rule_id]['cart_discount_price'] : 0;
                                 $model::saveOrderItemDiscounts($order_id, 0, 0, $discount_price, 0, 0, $rule_id, $simple_discount, $bulk_discount, $set_discount, $cart_discount, $cart_discount_label, $cart_shipping);
                             }
                         }
@@ -1250,6 +1285,7 @@ class ManageDiscount extends Base
      */
     function onCreateWoocommerceOrderLineItem($item, $cart_item_key, $values, $order)
     {
+
         if (isset(self::$calculated_cart_item_discount[$cart_item_key])) {
             self::$woocommerce_helper->setOrderItemMeta($item, '_advanced_woo_discount_item_total_discount', self::$calculated_cart_item_discount[$cart_item_key]);
         }
@@ -1431,7 +1467,7 @@ class ManageDiscount extends Base
      * @param string $get_only
      * @return bool
      */
-    static function calculateProductDiscountPrice($price, $product, $quantity = 1, $custom_price = 0, $get_only = 'discounted_price', $manual_request = false)
+    static function calculateProductDiscountPrice($price, $product, $quantity = 1, $custom_price = 0, $get_only = 'discounted_price', $manual_request = false, $is_cart = true)
     {
         if (!is_a($product, 'WC_Product')) {
             if (is_integer($product)) {
@@ -1443,7 +1479,8 @@ class ManageDiscount extends Base
         if (!$product) {
             return false;
         }
-        $discounts = self::$calculator->mayApplyPriceDiscount($product, $quantity, $custom_price, false, array(), true, $manual_request);
+        $discounts = self::$calculator->mayApplyPriceDiscount($product, $quantity, $custom_price, false, array(), $is_cart, $manual_request);
+
         if ($discounts) {
             switch ($get_only) {
                 case 'all':
@@ -1461,6 +1498,8 @@ class ManageDiscount extends Base
                     $price = isset($discounts['discounted_price']) ? $discounts['discounted_price'] : $price;
                     break;
             }
+        } else {
+            return false;
         }
         return $price;
     }
@@ -1574,15 +1613,38 @@ class ManageDiscount extends Base
             if(empty($callback_details['function'])){
                 continue;
             }
+            if(is_string($callback_details['function'])){
+                continue;
+            }
+
+            if(is_object($callback_details['function'])){
+                if($this->is_closure($callback_details['function'])){
+                    continue;
+                }
+            }
+
             if (count($callback_details['function']) != 2) {
                 continue;
             }
+
+            if(!is_object($callback_details['function'][0])){
+                continue;
+            }
+
             if ($class_name == get_class($callback_details['function'][0]) AND $func_name == $callback_details['function'][1]) {
                 $result = true;
                 break;// done!
             }
         }
         return $result;
+    }
+
+    function is_closure($t) {
+        if(class_exists('\Closure')){
+            return $t instanceof \Closure;
+        } else {
+            return false;
+        }
     }
 
     /**
