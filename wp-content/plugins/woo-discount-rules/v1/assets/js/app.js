@@ -1512,7 +1512,7 @@ function wooo_discount_range_altered() {
         });
 
         $('.coupons_selectbox_multi_select_wdr').on('trigger_ajax_select_wdr', function (event) {
-            $('.coupons_selectbox_multi_select_wdr').select2({
+            $('.coupons_selectbox_multi_select_wdr').selectWoo({
                 ajax: {
                     url: ajax_url,
                     type: 'GET',

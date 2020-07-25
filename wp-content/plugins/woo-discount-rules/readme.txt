@@ -4,7 +4,7 @@ Donate link: https://flycart.org/
 Tags: woocommerce, coupons, discounts, dynamic pricing, Buy One Get One Free, pricing deals, bulk discount, discount
 Requires at least: 4.4.1
 Tested up to: 5.4
-Stable tag: 1.9.12
+Stable tag: 2.0.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -335,6 +335,21 @@ Discount - Enter minimum & Maximum quantity -> Adjustment Type -> Product Discou
 * Dutch Translation - [@mvdburg1971](https://profiles.wordpress.org/mvdburg1971) - Michael van der Burg
 
 == Changelog ==
+
+= 2.0.1 - 14/07/20 =
+* Fix - Warning on install pack.
+
+= 2.0.0 - 14/07/20 =
+* Fix - Cart discount price for single product.
+* Fix - Displaying strikeout when chosen apply as coupon.
+* Fix - Coupon code not migrated while migration.
+* Fix - Not in list condition not working.
+* Improvement - Displayed max rule limit reach msg and limits.
+* Improvement - select2 to selectWoo.
+* Improvement - Individual rule report.
+* Improvement - Download exported csv without storing in server.
+* Improvement - Report for BOGO rules.
+* Feature - Import option.
 
 = 1.9.12 - 29/06/20 =
 * Fix - Dynamic strikeout improvement(strikeout doesn't replace for non matched qty).

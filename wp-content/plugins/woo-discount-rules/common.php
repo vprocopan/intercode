@@ -74,8 +74,8 @@ add_action('advanced_woo_discount_rules_on_settings_head', function () {
     global $awdr_load_version;
     $version = ($awdr_load_version == "v1") ? "v2" : "v1";
     $url = admin_url('admin.php?page=' . $page . '&awdr_switch_plugin_to=' . $version);
-    $message = __('Switch to Discount Rules 2.0  which comes with a better UI and advanced rules. (You can switch back any time. Your settings and rules in V1 are  kept as is)', WDR_TEXT_DOMAIN);
-    $button_text = __("Switch to 2.0 <span style='background-color: #FF8C00 ; padding: 3px; border-radius: 4px'>Public beta</span>", WDR_TEXT_DOMAIN);
+    $message = __('Switch to Discount Rules V2  which comes with a better UI and advanced rules. (You can switch back any time. Your settings and rules in V1 are  kept as is)', WDR_TEXT_DOMAIN);
+    $button_text = __("Switch to v2", WDR_TEXT_DOMAIN);
     if($version == "v1"){
         $has_switch = \Wdr\App\Helpers\Migration::hasSwitchBackOption();
         $message = __('Would you like to switch to older Woo Discount Rules?', WDR_TEXT_DOMAIN);

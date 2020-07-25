@@ -58,55 +58,129 @@ abstract class Base
         } elseif (is_array($cart)) {
             $cart_items = $cart;
         }
-        $quantity = 0;
-
+        $quantity = $not_in_list_quantity = 0;
         foreach ($cart_items as $cart_item) {
             $product = isset($cart_item['data']) ? $cart_item['data'] : array();
             if(Helper::isCartItemConsideredForCalculation(true, $cart_item, $type)){
                 if (self::$filter->match($product, $type, $comparision_method, $comparision_value, $options)) {
                     if ($type != 'products') {
                         $quantity += (int)$cart_item['quantity'];
+                    }else{
+                        if($comparision_method == 'not_in_list'){
+                            continue;
+                        }
+                        $quantity += (int)$cart_item['quantity'];
+                        /*$quantity = (int)$item['quantity'];
+                        $product_parant_id = Woocommerce::getProductParentId($product);
+                        if(!empty($product_parant_id)){
+                            $quantity = $this->getChildVariantCountInCart($options, $product_parant_id, $quantity, $cart_items);
+                        }*/
+                    }
+                }else{
+                    $not_in_list_product = $this->findNotInListProduct($product, $cart_item, $comparision_value, $type, $options);
+                    if($comparision_method == 'not_in_list' && $not_in_list_product){
+                        if ($type != 'products') {
+                            $not_in_list_quantity += (int)$cart_item['quantity'];
+                        }else{
+                            $not_in_list_quantity += (int)$cart_item['quantity'];
+                        }
                     }
                 }
             }
         }
+        $cart_in_list = array();
+        $cart_not_in_list = array();
         foreach ($cart_items as $item) {
             $product = isset($item['data']) ? $item['data'] : array();
             if(Helper::isCartItemConsideredForCalculation(true, $item, $type)){
                 if (self::$filter->match($product, $type, $comparision_method, $comparision_value, $options)) {
-                    if($type == 'products'){
-                        $quantity = 0;
-                        $quantity = (int)$item['quantity'];
-                        $product_parant_id = Woocommerce::getProductParentId($product);
-                        if(!empty($product_parant_id)){
-                            $quantity = $this->getChildVariantCountInCart($options, $product_parant_id, $quantity, $cart_items);
-                        }
+                    if($comparision_method == 'not_in_list'){
+                        $cart_in_list[] = 'yes';
+                        continue;
                     }
                     switch ($comparision_operator) {
                         case 'less_than':
                             if ($quantity < $comparision_quantity) {
-                                return true;
+                                $cart_in_list[] = 'yes';
+                            }else{
+                                $cart_in_list[] = 'no';
                             }
                             break;
                         case 'greater_than_or_equal':
                             if ($quantity >= $comparision_quantity) {
-                                return true;
+                                $cart_in_list[] = 'yes';
+                            }else{
+                                $cart_in_list[] = 'no';
                             }
                             break;
                         case 'greater_than':
                             if ($quantity > $comparision_quantity) {
-                                return true;
+                                $cart_in_list[] = 'yes';
+                            }else{
+                                $cart_in_list[] = 'no';
                             }
                             break;
                         default:
                         case 'less_than_or_equal':
                             if ($quantity <= $comparision_quantity) {
-                                return true;
+                                $cart_in_list[] = 'yes';
+                            }else{
+                                $cart_in_list[] = 'no';
                             }
                             break;
                     }
+                }else{
+                    $not_in_list_product = $this->findNotInListProduct($product, $item, $comparision_value, $type, $options);
+                    if($comparision_method == 'not_in_list' && $not_in_list_product){
+                       /* if($type == 'products'){
+                            $not_in_list_quantity = 0;
+                            $not_in_list_quantity = (int)$item['quantity'];
+                            $product_parant_id = Woocommerce::getProductParentId($product);
+                            if(!empty($product_parant_id)){
+                                $not_in_list_quantity = $this->getChildVariantCountInCart($options, $product_parant_id, $not_in_list_quantity, $cart_items);
+                            }
+                        }*/
+                        switch ($comparision_operator) {
+                            case 'less_than':
+                                if ($not_in_list_quantity < $comparision_quantity) {
+                                    $cart_not_in_list[] = 'no';
+                                }else{
+                                    $cart_not_in_list[] = 'yes';
+                                }
+                                break;
+                            case 'greater_than_or_equal':
+                                if ($not_in_list_quantity >= $comparision_quantity) {
+                                    $cart_not_in_list[] = 'no';
+                                }else{
+                                    $cart_not_in_list[] = 'yes';
+                                }
+                                break;
+                            case 'greater_than':
+                                if ($not_in_list_quantity > $comparision_quantity) {
+                                    $cart_not_in_list[] = 'no';
+                                }else{
+                                    $cart_not_in_list[] = 'yes';
+                                }
+                                break;
+                            default:
+                            case 'less_than_or_equal':
+                                if ($not_in_list_quantity <= $comparision_quantity) {
+                                    $cart_not_in_list[] = 'no';
+                                }else{
+                                    $cart_not_in_list[] = 'yes';
+                                }
+                                break;
+                        }
+                    }
                 }
             }
+        }
+        if(!empty($cart_not_in_list) && in_array('no', $cart_not_in_list)){
+            return false;
+        }elseif (!empty($cart_in_list) && in_array('no', $cart_in_list)){
+            return false;
+        } else if((!empty($cart_in_list) && in_array('yes', $cart_in_list)) || (!empty($cart_not_in_list) && in_array('yes', $cart_not_in_list))){
+            return true;
         }
         return false;
     }
@@ -227,5 +301,111 @@ abstract class Base
         }else{
             return $quantity;
         }
+    }
+
+    /**
+     * Find product that in product not in list condition
+     *
+     * @param $product
+     * @param $cart_item
+     * @param $comparision_value
+     * @param $type
+     * @param $options
+     * @return bool
+     */
+    function findNotInListProduct($product, $cart_item, $comparision_value, $type, $options){
+        $filter_helper = new Filter();
+        $product_id = $product->get_id();
+        $not_in_list_product = false;
+        switch ($type){
+            case 'product_category':
+                $categories = Woocommerce::getProductCategories($product);
+                $not_in_list_product = count(array_intersect($categories, $comparision_value)) > 0;
+                break;
+            case 'products':
+                $apply_discount_to_child = apply_filters('advanced_woo_discount_rules_apply_discount_to_child', true, $product);
+                if ($apply_discount_to_child) {
+                    if (isset($options->product_variants) && !empty($options->product_variants) && is_array($options->product_variants)) {
+                        $comparision_value = Helper::combineProductArrays($comparision_value, $options->product_variants);
+                    }
+                }
+                $not_in_list_product = in_array($product_id, $comparision_value);
+                break;
+            case 'product_attributes':
+                $attrs = Woocommerce::getProductAttributes($product);
+                $attr_ids = array();
+                if (Woocommerce::productTypeIs($product, 'variation')) {
+                    if (count(array_filter($attrs)) < count($attrs)) {
+                        if (isset($cart_item['variation'])) {
+                            $attrs = array();
+                            foreach ($cart_item['variation'] as $attribute_name => $value) {
+                                $attrs[str_replace('attribute_', '', $attribute_name)] = $value;
+                            }
+                        }
+                    }
+                    $product_variation = Woocommerce::getProduct(Woocommerce::getProductParentId($product));
+                    foreach ($attrs as $taxonomy => $value) {
+                        if ($value) {
+                            $term_obj = get_term_by('slug', $value, $taxonomy);
+                            if (!is_wp_error($term_obj) && $term_obj && $term_obj->name) {
+                                $attr_ids = array_merge($attr_ids, (array)($term_obj->term_id));
+                            }
+                        } else {
+                            $attrs_variation = Woocommerce::getProductAttributes($product_variation);
+                            foreach ($attrs_variation as $attr) {
+                                if ($taxonomy == Woocommerce::getAttributeName($attr))
+                                    $attr_ids = array_merge($attr_ids, Woocommerce::getAttributeOption($attr));
+                            }
+                        }
+                    }
+                    if(!empty($product_variation)){
+                        $attributes_parent = Woocommerce::getProductAttributes($product_variation);
+                        foreach ($attributes_parent as $attributes){
+                            if(!empty($attributes) && is_object($attributes)){
+                                $variation = Woocommerce::getAttributeVariation($attributes);
+                                if(!(int)$variation){
+                                    $options = Woocommerce::getAttributeOption($attributes);
+
+                                    if(!empty($options) && is_array($options)){
+                                        $attr_ids = array_merge($attr_ids, $options);
+                                    }
+                                }
+                            } else {
+                                $options = Woocommerce::getAttributeOption($attributes);
+                                if(!empty($options) && is_array($options)){
+                                    $attr_ids = array_merge($attr_ids, $options);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    foreach ($attrs as $attr) {
+                        $attr_ids = array_merge($attr_ids, Woocommerce::getAttributeOption($attr));
+                    }
+                }
+                $attr_ids = array_unique($attr_ids);
+                $not_in_list_product = count(array_intersect($attr_ids, $comparision_value)) > 0;
+                break;
+            case 'product_sku':
+                $product_sku = Woocommerce::getProductSku($product);
+                $not_in_list_product = in_array($product_sku, $comparision_value);
+                break;
+            case 'product_tags':
+                $tag_ids = Woocommerce::getProductTags($product);
+                $not_in_list_product = count(array_intersect($tag_ids, $comparision_value)) > 0;
+                break;
+            default:
+                ///for custom taxonomy
+                if(isset($options->custom_taxonomy) && $options->custom_taxonomy == $type){
+                    if(in_array($type, array_keys(Woocommerce::getCustomProductTaxonomies()))){
+                        $product_parent = Woocommerce::getProductParentId($product_id);
+                        $product_id = !empty($product_parent) ? $product_parent : $product_id;
+                        $term_ids = wp_get_post_terms($product_id, $type, array("fields" => "ids"));
+                        $not_in_list_product = count(array_intersect($term_ids, $comparision_value)) > 0;
+                    }
+                }
+                break;
+        }
+        return $not_in_list_product;
     }
 }

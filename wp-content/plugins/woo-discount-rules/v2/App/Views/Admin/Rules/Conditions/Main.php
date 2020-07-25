@@ -84,7 +84,8 @@ if (!defined('ABSPATH')) {
                             </div><?php
                             $config = new \Wdr\App\Controllers\Configuration();
                             $subtotal_promo = $config->getConfig("show_subtotal_promotion", '');
-                            if($type == 'cart_subtotal' && $subtotal_promo == 1){
+                            $type_promotion = isset($condition->type) ? $condition->type : NULL;
+                            if($type_promotion == 'cart_subtotal' && $subtotal_promo == 1){
                                 $operator = isset($options->operator) ? $options->operator : 'less_than';?>
                                 <div class="wdr-grid wdr-conditions-container wdr-condition-group <?php echo 'promo_show_hide_'.$i; ?>" data-index="<?php echo $i; ?>" style="<?php echo ($operator == 'greater_than_or_equal' || $operator == 'greater_than') ? '': 'display: none'; ?>">
                                     <?php include(WDR_PLUGIN_PATH . 'App/Views/Admin/Rules/Others/SubtotalPromotion.php'); ?>
@@ -128,19 +129,24 @@ if (!defined('ABSPATH')) {
     <!--Rule Limit Start-->
     <div class="wdr-condition-template">
         <div class="wdr-block">
-            <div class="wdr-conditions-relationship">
+            <div class="wdr-conditions-relationship"><?php
+                $usage_limits = $rule->getUsageLimits();
+                $used_limits = $rule->getUsedLimits(); ?>
                 <label><b><?php _e('Rule Limits', WDR_TEXT_DOMAIN); ?></b>
                     <span class="awdr-rule-limit-timestamp"><?php
                         if(!empty($current_time)) echo sprintf(esc_html__('Current date and time: %s', WDR_TEXT_DOMAIN), '<b>' . date('Y-m-d H:i', $current_time) . '</b>'); ?>
+                    </span>
+                    <span class="awdr-rule-limit-timestamp usage-limits-display" style="<?php echo ($usage_limits == 0) ? 'display:none;' : ''; ?>"> <?php
+                        _e('Rule Used: ', WDR_TEXT_DOMAIN);
+                        echo "<b class='awdr-used-limit-total'>".$used_limits."</b>"; ?>
                     </span>
                 </label>
 
             </div>
             <div class="awdr-general-settings-section">
                 <div class="wdr-rule-setting">
-                    <div class="wdr-apply-to" style="float:left;"><?php
-                        $usage_limits = $rule->getUsageLimits();?>
-                        <select class="wdr-title" name="usage_limits">
+                    <div class="wdr-apply-to" style="float:left;">
+                        <select class="wdr-title" id="select_usage_limits" name="usage_limits">
                             <option value="0" <?php echo ($usage_limits == 0) ? 'selected' : ''; ?>><?php _e('Unlimited', WDR_TEXT_DOMAIN); ?></option><?php
                             for ($limit = 1; $limit <= 20; $limit++) {
                                 ?>

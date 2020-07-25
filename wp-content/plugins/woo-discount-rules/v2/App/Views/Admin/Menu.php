@@ -20,8 +20,7 @@
                style="<?php echo ($tab_key === 'help') ? 'background: cornflowerblue;color: white;' : ''; ?>"
                href="<?php echo $link; ?>" <?php echo $target; ?>><?php echo $tab_handler->title; ?></a>
         <?php } ?>
-        <span class="awdr_version_text"> <?php echo 'v' . (defined('WDR_VERSION') ? WDR_VERSION : '2.0.0 + ') . ' ';
-            _e("<span style='color: #FF8C00 ; padding: 3px; border-radius: 4px'> (public beta) </span>", WDR_TEXT_DOMAIN); ?> </span>
+        <span class="awdr_version_text"> <?php echo 'v' . (defined('WDR_VERSION') ? WDR_VERSION : '2.0.0 + ') . ' '; ?> </span>
         <?php
         if (isset($on_sale_page_rebuild['available']) && $on_sale_page_rebuild['available']) {
             $additional_class_for_rebuild = '';

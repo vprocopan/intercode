@@ -63,7 +63,7 @@ if (!defined('ABSPATH')) {
                 } ?>" style="height: 34px;">
                 <!--<span class="wdr_desc_text"><?php /*_e('Vaild to', WDR_TEXT_DOMAIN); */ ?></span>-->
             </div>
-            <div class="">
+            <div class="awdr-report-type" >
                 <select name="type" class="chart-type" style="height: 33px">
                     <?php foreach ( $charts as $group => $charts_by_group ): ?>
                         <optgroup label="<?php echo $group ?>">

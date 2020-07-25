@@ -5,13 +5,13 @@
  * Description: Simple to complex discount rules for your WooCommerce store. Core package.
  * Author: Flycart Technologies LLP
  * Author URI: https://www.flycart.org
- * Version: 1.9.12
+ * Version: 2.0.1
  * Slug: woo-discount-rules
  * Text Domain: woo-discount-rules
  * Domain Path: /i18n/languages/
  * Requires at least: 4.6.1
  * WC requires at least: 3.0
- * WC tested up to: 4.2
+ * WC tested up to: 4.3
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -30,13 +30,13 @@ $awdr_load_version = get_option('advanced_woo_discount_rules_load_version', null
 if($awdr_load_version === null || empty($awdr_load_version)){
     $awdr_load_version = 'v1';
     /* Hide this for public beta release */
-    /*if(function_exists('get_posts')){
+    if(function_exists('get_posts')){
         $rules = get_posts(array('post_type' => 'woo_discount', 'numberposts' => '1'));
         if(empty($rules)){
             $cart_rules = get_posts(array('post_type' => 'woo_discount_cart', 'numberposts' => '1'));
             if(empty($cart_rules)) $awdr_load_version = 'v2';
         }
-    }*/
+    }
 }
 
 /**
@@ -82,7 +82,7 @@ if (!defined('WDR_PLUGIN_BASENAME')) {
  * Current version of our app
  */
 if (!defined('WDR_VERSION')) {
-    define('WDR_VERSION', '2.0.0');
+    define('WDR_VERSION', '2.0.1');
 }
 
 /**
@@ -165,8 +165,8 @@ if ($awdr_load_version == "v2") {
     if (!defined('WOO_DISCOUNT_PLUGIN_BASENAME')) {
         define('WOO_DISCOUNT_PLUGIN_BASENAME', plugin_basename(__FILE__));
     }
-    include_once(__DIR__ . "/{$awdr_load_version}/helper/activation-helper.php");
+    include_once(__DIR__ . "/v1/helper/activation-helper.php");
     register_activation_hook(__FILE__, 'onWooDiscountActivate');
     register_deactivation_hook(__FILE__, 'onWooDiscountDeactivation');
-    include_once(__DIR__ . "/{$awdr_load_version}/loader.php");
+    include_once(__DIR__ . "/v1/loader.php");
 }

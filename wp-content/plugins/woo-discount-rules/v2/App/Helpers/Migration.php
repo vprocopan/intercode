@@ -26,12 +26,12 @@ class Migration
     }
     public static function hasSwitchBackOption(){
         // For v2 phase 1 switch back should display by default
-        $has_switch_back_option = true;
-        /*$has_migration = (new self())->getMigrationInfoOf('has_migration', null);
+        //$has_switch_back_option = true;
+        $has_migration = (new self())->getMigrationInfoOf('has_migration', null);
         $has_switch_back_option = false;
         if($has_migration == 1){
             $has_switch_back_option = true;
-        }*/
+        }
 
         return apply_filters('advanced_woo_discount_rules_has_switch_back_option', $has_switch_back_option);
     }
@@ -422,9 +422,17 @@ class Migration
             if($rule->coupons_to_apply_option == 'create_dynamic_coupon'){
                 $option = array('operator' => 'custom_coupon', 'custom_value' => $rule->dynamic_coupons_to_apply);
             } else if($rule->coupons_to_apply_option == 'any_selected'){
-                $option = array('operator' => 'at_least_one', 'value' => $this->getData($rule->coupons_to_apply));
+                $coupon = $this->getData($rule->coupons_to_apply);
+                if(is_string($coupon)){
+                    $coupon = explode(',', $coupon);
+                }
+                $option = array('operator' => 'at_least_one', 'value' => $coupon);
             } else {
-                $option = array('operator' => 'all', 'value' => $this->getData($rule->coupons_to_apply));
+                $coupon = $this->getData($rule->coupons_to_apply);
+                if(is_string($coupon)){
+                    $coupon = explode(',', $coupon);
+                }
+                $option = array('operator' => 'all', 'value' => $coupon);
             }
             $this->form->setConditions('cart_coupon', $option);
         }

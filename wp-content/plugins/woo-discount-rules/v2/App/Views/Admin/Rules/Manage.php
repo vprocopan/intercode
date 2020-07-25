@@ -9,34 +9,43 @@
             $current_time = current_time('timestamp');
         }
         $rule_status = $rule->getRuleVaildStatus();
+        $check_rule_limit = $rule->checkRuleUsageLimits();
         $rule_id = $rule->getId();
         if ($rule_status == 'in_future') { ?>
-            <div class="notice inline notice notice-warning notice-alt">
-            <p>
-                <b><?php esc_html_e('This rule is not running currently: ', WDR_TEXT_DOMAIN); ?></b><?php esc_html_e(' Start date and time is set in the future date', WDR_TEXT_DOMAIN); ?>
-            </p>
+            <div class="notice inline notice notice-warning notice-alt awdr-rule-limit-disabled">
+                <p class="rule_limit_msg_future">
+                    <b><?php esc_html_e('This rule is not running currently: ', WDR_TEXT_DOMAIN); ?></b><?php esc_html_e(' Start date and time is set in the future date', WDR_TEXT_DOMAIN); ?>
+                </p><?php
+                if ($check_rule_limit == 'Disabled') {?>
+                    <p class="rule_limit_msg">
+                        <b><?php esc_html_e('This rule is not running currently: ', WDR_TEXT_DOMAIN); ?></b><?php esc_html_e(' Rule reached maximum usage limit  ', WDR_TEXT_DOMAIN); ?>
+                    </p><?php
+                } ?>
             </div><?php
         } elseif ($rule_status == 'expired') {
             ?>
-            <div class="notice inline notice notice-warning notice-alt">
-            <p>
-                <b><?php esc_html_e('This rule is not running currently: ', WDR_TEXT_DOMAIN); ?></b><?php esc_html_e(' Validity expired', WDR_TEXT_DOMAIN); ?>
-            </p>
+            <div class="notice inline notice notice-warning notice-alt awdr-rule-limit-disabled">
+                <p class="rule_limit_msg_expired">
+                    <b><?php esc_html_e('This rule is not running currently: ', WDR_TEXT_DOMAIN); ?></b><?php esc_html_e(' Validity expired', WDR_TEXT_DOMAIN); ?>
+                </p><?php
+                if ($check_rule_limit == 'Disabled') {?>
+                    <p class="rule_limit_msg">
+                        <b><?php esc_html_e('This rule is not running currently: ', WDR_TEXT_DOMAIN); ?></b><?php esc_html_e(' Rule reached maximum usage limit  ', WDR_TEXT_DOMAIN); ?>
+                    </p><?php
+                } ?>
             </div><?php
-        }
-        /*if(isset($on_sale_page_rebuild['available']) && $on_sale_page_rebuild['available']){
-            $additional_class_for_rebuild = '';
-            if($on_sale_page_rebuild['required_rebuild'] === true){
-                $additional_class_for_rebuild = ' need_attention';
+        }else{
+            if($check_rule_limit == 'Disabled') {?>
+                <div class="notice inline notice notice-warning notice-alt awdr-rule-limit-disabled">
+                    <p class="rule_limit_msg">
+                        <b><?php esc_html_e('This rule is not running currently: ', WDR_TEXT_DOMAIN); ?></b><?php esc_html_e(' Rule reached maximum usage limit  ', WDR_TEXT_DOMAIN); ?>
+                    </p>
+                </div><?php
             }
-            */?><!--
-            <div class="awdr_rebuild_on_sale_rule_page_con<?php /*echo $additional_class_for_rebuild; */?>">
-                <button type="button" class="btn btn-danger" id="awdr_rebuild_on_sale_list_on_rule_page"><?php /*esc_html_e('Rebuild index', WDR_TEXT_DOMAIN); */?></button>
-            </div>
-        --><?php
-/*        }*/
-        ?>
-
+        }?>
+        <div class="notice inline notice notice-warning notice-alt awdr-rule-limit-disabled-outer" style="display: none; padding: 10px;">
+            <p class="rule_limit_msg_outer"></p>
+        </div>
         <form id="wdr-save-rule" name="rule_generator">
             <div class="wdr-sticky-header" id="ruleHeader">
                 <div class="wdr-enable-rule">

@@ -49,6 +49,7 @@ class ManageDiscount extends Base
         $awdr_front_end_script = array(
             'ajaxurl' => admin_url('admin-ajax.php'),
             'enable_update_price_with_qty' => $ajax_update_price,
+            'refresh_order_review' => self::$config->getConfig('refresh_order_review', 0),
             'custom_target_simple_product' => apply_filters('advanced_woo_discount_rules_custom_target_for_simple_product_on_qty_update', ""),
             'custom_target_variable_product' => apply_filters('advanced_woo_discount_rules_custom_target_for_variable_product_on_qty_update', ""),
             'js_init_trigger' => apply_filters('advanced_woo_discount_rules_update_discount_price_init_trigger', ""),
@@ -220,6 +221,11 @@ class ManageDiscount extends Base
             $product_id = Woocommerce::getProductId($product);
             //Calculate the product price
             $prices = self::calculateInitialAndDiscountedPrice($product, $quantity, $is_cart = false, $ajax_price);
+            $apply_as_cart_rule = isset($prices['apply_as_cart_rule']) ? $prices['apply_as_cart_rule'] : array('no');
+            //echo "<pre>"; print_r($apply_as_cart_rule); echo "</pre>";
+            if(!in_array('no', $apply_as_cart_rule)){
+                return $price_html;
+            }
             if($ajax_price){
                 $discount_details = (isset($prices['total_discount_details'])) ? $prices['total_discount_details'] : false;
                 if($discount_details) {
@@ -841,6 +847,8 @@ class ManageDiscount extends Base
         if($disable_coupon_when_rule_applied == 'disable_rules'){
             $has_third_party_coupon = $this->isCartContainsAnyThirdPartyCoupon();
             if($has_third_party_coupon === true){
+                $calc = self::$calculator;
+                $calc::$applied_rules = array();
                 $run_rule = false;
             }
         }
@@ -1023,6 +1031,68 @@ class ManageDiscount extends Base
     {
         $model = new DBTable();
         $applied_rules = array();
+        $buy_x_get_x_free_discounts = isset(Rule::$additional_discounts['buy_x_get_x_discounts']) ? Rule::$additional_discounts['buy_x_get_x_discounts'] : '';
+        $buy_x_get_y_free_discounts = isset(Rule::$additional_discounts['buy_x_get_y_discounts']) ? Rule::$additional_discounts['buy_x_get_y_discounts'] : '';
+
+        if(!empty($buy_x_get_x_free_discounts)){
+            foreach ($buy_x_get_x_free_discounts as $buy_x_get_x_free_key => $buy_x_get_x_free_discount){
+                $simple_discount = $bulk_discount = $set_discount = $cart_discount = 0;
+                $rule_id = isset($buy_x_get_x_free_discount['rule_id']) ? $buy_x_get_x_free_discount['rule_id'] : 0;
+                $variant_item_id = isset($buy_x_get_x_free_discount['variation_id']) ? $buy_x_get_x_free_discount['variation_id'] : '';
+                $item_id = isset($buy_x_get_x_free_discount['product_id']) ? $buy_x_get_x_free_discount['product_id'] : 0;
+                if(!empty($variant_item_id)){
+                    $item_id = $variant_item_id;
+                }
+                $free_product = isset($buy_x_get_x_free_discount['cart_item']['data']) ? $buy_x_get_x_free_discount['cart_item']['data'] : '';
+                $discount = Woocommerce::getProductPrice($free_product);
+                $discount_quantity = isset($buy_x_get_x_free_discount['discount_quantity']) ? $buy_x_get_x_free_discount['discount_quantity'] : 0;
+                $discount_price = $discount * $discount_quantity;
+                $cart_shipping = 'no';
+                $cart_discount_label =  '';
+                if($discount_price != 0){
+                    $applied_rules[] = $rule_id;
+                }
+                $model::saveOrderItemDiscounts($order_id, $item_id, 0, 0, $discount_price, $discount_quantity, $rule_id, $simple_discount, $bulk_discount, $set_discount, $cart_discount, $cart_discount_label, $cart_shipping);
+            }
+
+        }
+        if(!empty($buy_x_get_y_free_discounts)){
+            foreach ($buy_x_get_y_free_discounts as $buy_x_get_y_free_key => $buy_x_get_y_free_discount){
+                $simple_discount = $bulk_discount = $set_discount = $cart_discount = 0;
+                $rule_id = isset($buy_x_get_y_free_discount['rule_id']) ? $buy_x_get_y_free_discount['rule_id'] : 0;
+                $variant_item_id = isset($buy_x_get_y_free_discount['variation_id']) ? $buy_x_get_y_free_discount['variation_id'] : 0;
+                $item_id = isset($buy_x_get_y_free_discount['product_id']) ? $buy_x_get_y_free_discount['product_id'] : 0;
+                if(!empty($variant_item_id)){
+                    $item_id = $variant_item_id;
+                }
+                if($item_id != 0){
+                    $free_product = isset($buy_x_get_y_free_discount['cart_item']['data']) ? $buy_x_get_y_free_discount['cart_item']['data'] : '';
+                    $discount = Woocommerce::getProductPrice($free_product);
+                    $discount_quantity = isset($buy_x_get_y_free_discount['discount_quantity']) ? $buy_x_get_y_free_discount['discount_quantity'] : 0;
+                    $discount_price = $discount * $discount_quantity;
+                }else{
+                    $discount_price = 0;
+                    $discount_products = isset($buy_x_get_y_free_discount['discount_products']) ? $buy_x_get_y_free_discount['discount_products'] : array();
+                    if(!empty($discount_products)){
+                        foreach ($discount_products as $product_id){
+                            $free_product = Woocommerce::getProduct((int)$product_id);
+                            $discount = Woocommerce::getProductPrice($free_product);
+                            $discount_quantity = isset($buy_x_get_y_free_discount['discount_quantity']) ? $buy_x_get_y_free_discount['discount_quantity'] : 0;
+                            $discount_price += $discount * $discount_quantity;
+                        }
+                    }
+                }
+                $cart_shipping = 'no';
+                $cart_discount_label =  '';
+
+                if($discount_price != 0){
+                    $applied_rules[] = $rule_id;
+                }
+                $model::saveOrderItemDiscounts($order_id, $item_id, 0, 0, $discount_price, $discount_quantity, $rule_id, $simple_discount, $bulk_discount, $set_discount, $cart_discount, $cart_discount_label, $cart_shipping);
+            }
+
+        }
+
         if (!empty(self::$calculated_cart_item_discount)) {
             foreach (self::$calculated_cart_item_discount as $cart_key => $discount) {
                 $product_id = isset($discount['product_id']) ? $discount['product_id'] : 0;
@@ -1043,16 +1113,27 @@ class ManageDiscount extends Base
                     foreach ($save_order_item_discounts_array as $key => $value) {
                         $simple_discount = $bulk_discount = $set_discount = $cart_discount = 0;
                         $rule_id = $key;
-                        $applied_rules[] = $rule_id;
                         $cart_discount = isset($cart_discount_details[$rule_id]['cart_discount']) ? $cart_discount_details[$rule_id]['cart_discount'] : '0';
                         $cart_shipping = (isset($cart_discount_details[$rule_id]['cart_shipping']) && !empty($cart_discount_details[$rule_id]['cart_shipping'])) ? $cart_discount_details[$rule_id]['cart_shipping'] : 'no';
                         $cart_discount_label = isset($cart_discount_details[$rule_id]['cart_discount_label']) ? $cart_discount_details[$rule_id]['cart_discount_label'] : '';
                         $simple_discount = isset($value['simple_discount']) ? $value['simple_discount'] : 0;
                         $bulk_discount = isset($value['bulk_discount']) ? $value['bulk_discount'] : 0;
                         $set_discount = isset($value['set_discount']['discount_value']) ? $value['set_discount']['discount_value'] : 0;
-                        $discount_price = $simple_discount + $bulk_discount + $set_discount;
+                        $bxgx_discount_price = isset($value['buy_x_get_x_discount']['discount_price_per_quantity']) ? $value['buy_x_get_x_discount']['discount_price_per_quantity'] : 0;
+                        $bxgx_discount_qty = isset($value['buy_x_get_x_discount']['discount_quantity']) ? $value['buy_x_get_x_discount']['discount_quantity'] : 0;
+                        $bxgx_discount = $bxgx_discount_price * $bxgx_discount_qty;
+                        $bxgy_discount_price = isset($value['buy_x_get_y_discount']['discount_price_per_quantity']) ? $value['buy_x_get_y_discount']['discount_price_per_quantity'] : 0;
+                        $bxgy_discount_qty = isset($value['buy_x_get_y_discount']['discount_quantity']) ? $value['buy_x_get_y_discount']['discount_quantity'] : 0;
+                        $bxgy_discount = $bxgy_discount_price * $bxgy_discount_qty;
+                        $bxgy_cheapest_discount_price = isset($value['buy_x_get_y_cheapest_in_cart_discount']['discount_price_per_quantity']) ? $value['buy_x_get_y_cheapest_in_cart_discount']['discount_price_per_quantity'] : 0;
+                        $bxgy_cheapest_discount_qty = isset($value['buy_x_get_y_cheapest_in_cart_discount']['discount_quantity']) ? $value['buy_x_get_y_cheapest_in_cart_discount']['discount_quantity'] : 0;
+                        $bxgy_cheapest_discount = $bxgy_cheapest_discount_price * $bxgy_cheapest_discount_qty;
+                        $discount_price = $simple_discount + $bulk_discount + $set_discount + $bxgx_discount + $bxgy_discount + $bxgy_cheapest_discount;
                         if ($discount_price < 0) {
                             $discount_price = 0;
+                        }
+                        if($discount_price != 0){
+                            $applied_rules[] = $rule_id;
                         }
                         $model::saveOrderItemDiscounts($order_id, $product_id, $initial_price, $discounted_price, $discount_price, $cart_quantity, $rule_id, $simple_discount, $bulk_discount, $set_discount, $cart_discount, $cart_discount_label, $cart_shipping);
                     }
@@ -1064,7 +1145,10 @@ class ManageDiscount extends Base
                                 $cart_shipping = (isset($cart_discount_details[$rule_id]['cart_shipping']) && !empty($cart_discount_details[$rule_id]['cart_shipping'])) ? $cart_discount_details[$rule_id]['cart_shipping'] : 'no';
                                 $cart_discount_label = isset($cart_discount_details[$rule_id]['cart_discount_label']) ? $cart_discount_details[$rule_id]['cart_discount_label'] : '';
                                 $cart_discount = isset($cart_discount_details[$rule_id]['cart_discount_price']) ? $cart_discount_details[$rule_id]['cart_discount_price'] : 0;
-                                $model::saveOrderItemDiscounts($order_id, 0, 0, $discount_price, 0, 0, $rule_id, $simple_discount, $bulk_discount, $set_discount, $cart_discount, $cart_discount_label, $cart_shipping);
+                                if($cart_discount != 0){
+                                    $applied_rules[] = $rule_id;
+                                }
+                                $model::saveOrderItemDiscounts($order_id, 0, 0, $discounted_price, 0, 0, $rule_id, $simple_discount, $bulk_discount, $set_discount, $cart_discount, $cart_discount_label, $cart_shipping);
                             }
                         }
                     }
@@ -1285,11 +1369,29 @@ class ManageDiscount extends Base
      */
     function onCreateWoocommerceOrderLineItem($item, $cart_item_key, $values, $order)
     {
-
-        if (isset(self::$calculated_cart_item_discount[$cart_item_key])) {
-            self::$woocommerce_helper->setOrderItemMeta($item, '_advanced_woo_discount_item_total_discount', self::$calculated_cart_item_discount[$cart_item_key]);
+        $meta_discount_details = isset(self::$calculated_cart_item_discount[$cart_item_key]) ? self::$calculated_cart_item_discount[$cart_item_key] : array();
+        if(!empty($meta_discount_details)){
+            $item_quantity = isset($item->legacy_values['quantity']) ? $item->legacy_values['quantity'] : 0;
+            $product = isset($item->legacy_values['data']) ? $item->legacy_values['data'] : array();
+            $item_product_id = Woocommerce::getProductId($product);
+            $item_cart_discount_details = isset($meta_discount_details['cart_discount_details']) ? $meta_discount_details['cart_discount_details'] : array();
+            if(!empty($item_cart_discount_details)){
+                foreach ($item_cart_discount_details as $key => $detail){
+                    $rule_applied_product_id = isset($detail['applied_product_ids']) ? $detail['applied_product_ids'] : array();
+                    $cart_discount_price = isset( $meta_discount_details['cart_discount_details'][$key]['cart_discount_product_price'][$item_product_id][$key])? $meta_discount_details['cart_discount_details'][$key]['cart_discount_product_price'][$item_product_id][$key] : 0;
+                    $meta_discount_details['cart_discount_details'][$key]['cart_discount_price'] = $cart_discount_price;
+                    $cart_discount_price = $cart_discount_price / $item_quantity;
+                    $meta_discount_details['cart_discount_details'][$key]['cart_discount_product_price'] = $cart_discount_price;
+                    unset($meta_discount_details['cart_discount_details'][$key]['applied_product_ids']);
+                    if(!in_array($item_product_id,$rule_applied_product_id)){
+                        unset( $meta_discount_details['cart_discount_details'][$key]);
+                    }
+                }
+            }
+            self::$woocommerce_helper->setOrderItemMeta($item, '_advanced_woo_discount_item_total_discount', $meta_discount_details);
         }
     }
+
 
     /**
      * Calculate the product's initial and discount price
@@ -1788,5 +1890,26 @@ class ManageDiscount extends Base
         echo "<script>";
         echo "jQuery('#awdr_checkout_subtotal_promotion_messages').html(jQuery('#awdr_checkout_subtotal_promotion_messages_data').html());jQuery('#awdr_checkout_subtotal_promotion_messages_data').remove()";
         echo "</script>";
+    }
+
+    /**
+     * Export Data via CSV
+     */
+    public function awdrExportCsv(){
+        if (isset($_POST['wdr-export'])) {
+            ob_end_clean();
+            $rule_helper = new Rule();
+            $rules = $rule_helper->exportRuleByName('all');
+            $file_name = 'advanced-discount-rules-' . date("Y-m-d-h-i-a") . '.csv';
+            $file = fopen('php://output', 'w');
+            header('Content-type: application/csv');
+            header('Content-Disposition: attachment; filename='.$file_name);
+            fputcsv($file, array('id', 'enabled', 'deleted', 'exclusive', 'title', 'priority', 'apply_to', 'filters', 'conditions', 'product_adjustments', 'cart_adjustments', 'buy_x_get_x_adjustments', 'buy_x_get_y_adjustments', 'bulk_adjustments', 'set_adjustments', 'other_discounts', 'date_from', 'date_to', 'usage_limits', 'rule_language', 'used_limits', 'additional', 'max_discount_sum', 'advanced_discount_message', 'discount_type', 'used_coupons', 'created_by', 'created_on', 'modified_by', 'modified_on'));
+            foreach ($rules as $rule_row) {
+                $row_data = (array)$rule_row;
+                fputcsv($file, $row_data);
+            }
+            exit;
+        }
     }
 }

@@ -13,6 +13,8 @@ class Statistics extends Base
     public $priority = 30;
     protected $tab = 'statistics';
     protected $reports;
+    protected $rule_details = array();
+
 
     /**
      * GeneralSettings constructor.
@@ -21,19 +23,34 @@ class Statistics extends Base
     {
         parent::__construct();
         $this->title = __('Reports', WDR_TEXT_DOMAIN);
-
+        $rule_helper = new Rule();
+        $available_conditions = $this->getAvailableConditions();
+        $rules = $rule_helper->getAllRules($available_conditions);
+        foreach ($rules as $rule){
+            $rule_id = $rule->getId();
+            $rule_title = $rule->getTitle();
+            $this->rule_details[$rule_id] = array(
+                'handler' => new Reports\RuleNameDiscount($rule),
+                'label'   => __( $rule_title , WDR_TEXT_DOMAIN ),
+                'group'   => __( 'Rule Name', WDR_TEXT_DOMAIN ),
+                'rule_id'   => $rule_id,
+            );
+        }
         $this->reports = array(
-            'rule_amount' => array(
-               'handler' => new Reports\RuleAmount(),
-                'label'   => __( 'Rule amount', WDR_TEXT_DOMAIN ),
-                'group'   => __( 'Rule', WDR_TEXT_DOMAIN ),
-            ),
             'rule_amount_extra' => array(
                 'handler' => new Reports\RuleAmountWithCartDiscount(),
-                'label'   => __( 'Rule amount with cart discount', WDR_TEXT_DOMAIN ),
+                'label'   => __( 'All Rules', WDR_TEXT_DOMAIN ),
                 'group'   => __( 'Rule', WDR_TEXT_DOMAIN ),
+                'rule_id'   => 0,
+            ),
+            'rule_amount' => array(
+               'handler' => new Reports\RuleAmount(),
+                'label'   => __( 'All Rules (except cart adjustment type)', WDR_TEXT_DOMAIN ),
+                'group'   => __( 'Rule', WDR_TEXT_DOMAIN ),
+                'rule_id'   => 0,
             ),
         );
+        $this->reports = $this->reports+$this->rule_details;
     }
 
     /**

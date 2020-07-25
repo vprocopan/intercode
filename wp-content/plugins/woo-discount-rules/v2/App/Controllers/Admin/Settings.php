@@ -182,7 +182,12 @@ class Settings extends Base
         /**
          * Enqueue js
          */
-        wp_enqueue_script('wdr-select2-js', self::$woocommerce_helper->getWooPluginUrl() . '/assets/js/select2/select2.full.min.js', array('jquery'));
+        if(apply_filters('advanced_woo_discount_rules_load_select_js', true)){
+            wp_enqueue_script('wdr-select2-js', self::$woocommerce_helper->getWooPluginUrl() . '/assets/js/select2/select2.full.min.js', array('jquery'));
+            wp_enqueue_script(WDR_SLUG . '-rulebuilder', WDR_PLUGIN_URL . 'Assets/Js/rulebuilder.js', array('jquery', 'wdr-select2-js', WDR_SLUG . '-datetimepickerjs'));
+        } else {
+            wp_enqueue_script(WDR_SLUG . '-rulebuilder', WDR_PLUGIN_URL . 'Assets/Js/rulebuilder.js', array('jquery', WDR_SLUG . '-datetimepickerjs'));
+        }
         wp_enqueue_style('wdr-select2-js', self::$woocommerce_helper->getWooPluginUrl() . '/assets/css/select2.css');
         wp_enqueue_script( 'woocommerce_admin' );
         //To load woocommerce product select
@@ -191,7 +196,6 @@ class Settings extends Base
         wp_enqueue_script(WDR_SLUG . '-jquery-ui', WDR_PLUGIN_URL . 'Assets/Js/Jquery-ui/jquery-ui.min.js', array('jquery', 'jquery'));
         wp_enqueue_script(WDR_SLUG . '-datetimepickerjs', WDR_PLUGIN_URL . 'Assets/Js/jquery.datetimepicker.full.min.js', array('jquery', 'jquery'));
         wp_enqueue_script(WDR_SLUG . '-moment', WDR_PLUGIN_URL . 'Assets/Js/moment.min.js', array('jquery', 'jquery'));
-        wp_enqueue_script(WDR_SLUG . '-rulebuilder', WDR_PLUGIN_URL . 'Assets/Js/rulebuilder.js', array('jquery', 'wdr-select2-js', WDR_SLUG . '-datetimepickerjs'));
         wp_register_script(WDR_SLUG . '-admin', WDR_PLUGIN_URL . 'Assets/Js/admin_script.js');
         wp_enqueue_script(WDR_SLUG . '-admin');
         wp_enqueue_script(WDR_SLUG . '-dragndraop-js', WDR_PLUGIN_URL . 'Assets/Js/jquery.dragtable.js');
@@ -459,6 +463,10 @@ class Settings extends Base
             'rebuild_on_sale_list_processing_text' => __('Processing please wait..', WDR_TEXT_DOMAIN),
             'rebuild_on_sale_list_processed_text' => __('Rebuild index processed', WDR_TEXT_DOMAIN),
             'rebuild_on_sale_list_error_please_select_rule' => __('Please select the rules to build index', WDR_TEXT_DOMAIN),
+            'invalid_file_type' => __("Invalid File. Upload : <b style='color:red;'>.csv</b> File. </br>", WDR_TEXT_DOMAIN),
+            'invalid_rule_limit' => __("<b>This rule is not running currently:</b> Rule reached maximum usage limit", WDR_TEXT_DOMAIN),
+            'invalid_rule_limit_with_date_future' => __("<b>This rule is not running currently:</b> Start date and time is set in the future date", WDR_TEXT_DOMAIN),
+            'invalid_rule_limit_with_date_expire' => __("<b>This rule is not running currently:</b> Validity expired", WDR_TEXT_DOMAIN),
         );
     }
 }

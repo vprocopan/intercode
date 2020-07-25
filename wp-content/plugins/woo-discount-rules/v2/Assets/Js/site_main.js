@@ -2,15 +2,18 @@
     /**
      * refresh cart when payment method changed
      */
-    $(document).on('change', 'input[name="payment_method"],input[name="billing_city"],input[name="billing_postcode"]', function () {
-        refreshCart();
-    });
-    /**
-     * refresh cart when Email changed
-     */
-    $(document).on('blur', 'input[name="billing_email"]', function () {
-        refreshCart();
-    });
+    if (awdr_params.refresh_order_review == '1') {
+        $(document).on('change', 'input[name="payment_method"],input[name="billing_city"],input[name="billing_postcode"]', function () {
+            refreshCart();
+        });
+
+        /**
+         * refresh cart when Email changed
+         */
+        $(document).on('blur', 'input[name="billing_email"], select#billing_state', function () {
+            refreshCart();
+        });
+    }
 
     function refreshCart() {
         $('body').trigger('update_checkout');

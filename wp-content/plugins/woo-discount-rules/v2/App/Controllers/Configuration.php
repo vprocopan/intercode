@@ -40,6 +40,7 @@ class Configuration
         'table_title_column' => 1,//0,1
         'table_discount_column' => 1,//0,1
         'table_range_column' => 1,//0,1
+        'refresh_order_review' => 0,//1,0
         'suppress_other_discount_plugins' => 0,//1,0
         'show_sale_badge_only_on_condition_passed' => 0,//1,0
         'position_to_show_bulk_table' => 'woocommerce_before_add_to_cart_form',//woocommerce_product_meta_end,woocommerce_product_meta_start,woocommerce_after_add_to_cart_form,woocommerce_before_add_to_cart_form,woocommerce_after_single_product,woocommerce_before_single_product,woocommerce_after_single_product_summary,woocommerce_before_single_product_summary

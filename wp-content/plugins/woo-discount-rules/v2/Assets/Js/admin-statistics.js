@@ -13,7 +13,9 @@ function googleChartsLoadCallback() {
 
 jQuery(document).ready(function () {
     isjQueryReady = true;
+    jQuery('.chart-type').select2();
     init();
+
 });
 
 function init() {
@@ -116,7 +118,6 @@ function showChart(params) {
         function (response) {
             jQuery('.update-chart').prop('disabled', false);
             jQuery('.chart-placeholder').removeClass('loading');
-
             if (response.success) {
                 if (response.data.columns.length > 1) {
                     response_content = response;
@@ -124,6 +125,8 @@ function showChart(params) {
                 } else {
                     jQuery('#chart-container').html(wdr_data.localization_data.chart_data);
                 }
+            }else {
+                jQuery('#chart-container').html(wdr_data.localization_data.chart_data);
             }
         },
         'json'

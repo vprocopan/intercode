@@ -183,5 +183,7 @@ class Router
             // For handling BOGO
             add_filter('advanced_woo_discount_rules_after_processed_bogo_free_auto_add', array(self::$manage_discount, 'removeThirdPartyCoupon'));
         }
+
+        add_action('advanced_woo_discount_rules_after_initialize', array(self::$manage_discount, 'awdrExportCsv'));
     }
 }

@@ -16,7 +16,7 @@ class ImportExport extends Base
     public function __construct()
     {
         parent::__construct();
-        $this->title = __('Export', WDR_TEXT_DOMAIN);
+        $this->title = __('Import/Export', WDR_TEXT_DOMAIN);
     }
 
     /**

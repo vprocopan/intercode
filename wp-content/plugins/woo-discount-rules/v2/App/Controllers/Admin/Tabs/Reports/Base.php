@@ -19,11 +19,6 @@ abstract class Base extends BaseController
     /**
      * @return string
      */
-    abstract function get_title();
-
-    /**
-     * @return string
-     */
     abstract function get_subtitle();
 
     /**

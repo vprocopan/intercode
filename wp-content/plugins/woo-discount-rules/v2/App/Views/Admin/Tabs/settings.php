@@ -77,13 +77,28 @@
                     </tr>
                     <tr>
                         <td scope="row">
-                            <label for="suppress_other_discount_plugins" class="awdr-left-align"><?php _e('Suppress third party discount plugins', WDR_TEXT_DOMAIN) ?></label>
+                            <label class="awdr-left-align"><?php _e('Refresh order review in checkout', WDR_TEXT_DOMAIN) ?></label>
+                            <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Useful when you have purchase history/shipping address based discount.', WDR_TEXT_DOMAIN); ?></span>
+                        </td>
+                        <td>
+                            <input type="radio" name="refresh_order_review" id="refresh_order_review_enable"
+                                   value="1" <?php echo($configuration->getConfig('refresh_order_review', 0) ? 'checked' : '') ?>><label
+                                    for="refresh_order_review_enable"><?php _e('Yes', WDR_TEXT_DOMAIN); ?></label>
+                            <input type="radio" name="refresh_order_review"
+                                   id="refresh_order_review_disable"
+                                   value="0" <?php echo(!$configuration->getConfig('refresh_order_review', 0) ? 'checked' : '') ?>><label
+                                    for="refresh_order_review_disable"><?php _e('No', WDR_TEXT_DOMAIN); ?></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="row">
+                            <label class="awdr-left-align"><?php _e('Suppress third party discount plugins', WDR_TEXT_DOMAIN) ?></label>
                             <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('suppress third party plugins from modifying the prices. other discount plugins may not works!', WDR_TEXT_DOMAIN); ?></span>
                         </td>
                         <td>
                             <input type="radio" name="suppress_other_discount_plugins" id="suppress_other_discount_plugins"
                                    value="1" <?php echo($configuration->getConfig('suppress_other_discount_plugins', 0) ? 'checked' : '') ?>><label
-                                    for="modify_price_at_product_page"><?php _e('Yes', WDR_TEXT_DOMAIN); ?></label>
+                                    for="suppress_other_discount_plugins"><?php _e('Yes', WDR_TEXT_DOMAIN); ?></label>
                             <input type="radio" name="suppress_other_discount_plugins"
                                    id="do_not_suppress_other_discount_plugins"
                                    value="0" <?php echo(!$configuration->getConfig('suppress_other_discount_plugins', 0) ? 'checked' : '') ?>><label

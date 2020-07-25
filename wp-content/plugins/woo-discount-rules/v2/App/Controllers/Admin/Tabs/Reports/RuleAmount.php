@@ -10,12 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class RuleAmount extends Base {
 
-	public function get_title() {
-		return __( 'Rule amount data without cart adjustments', WDR_TEXT_DOMAIN );
-	}
-
 	public function get_subtitle() {
-		return __( 'TOP 5', WDR_TEXT_DOMAIN );
+		return __( 'Amount shown in default store currency', WDR_TEXT_DOMAIN );
 	}
 
 	public function get_type() {
@@ -59,7 +55,6 @@ class RuleAmount extends Base {
 
 	protected function prepare_data( $columns, $rows ) {
 		$ret = array(
-			'title'    => $this->get_title(),
 			'subtitle' => $this->get_subtitle(),
 			'type'     => $this->get_type(),
 			'columns'  => $columns,

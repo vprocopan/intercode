@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
                         class="wdr-bulk-type bulk_discount_select awdr_mode_of_operator">
                     <option value="product_cumulative" <?php if ($bulk_adj_operator == 'product_cumulative') {
                         echo 'selected';
-                    } ?>><?php _e('Product filters together', WDR_TEXT_DOMAIN) ?></option>
+                    } ?>><?php _e('Filters set above', WDR_TEXT_DOMAIN) ?></option>
                     <option value="product" <?php if ($bulk_adj_operator == 'product') {
                         echo 'selected';
                     } ?>><?php _e('Individual product', WDR_TEXT_DOMAIN) ?></option>

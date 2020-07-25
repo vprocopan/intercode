@@ -209,18 +209,20 @@ class DBTable
      * @param $format
      * @param $values
      * @param null $rule_id
+     * @param $import_id
      * @return int|null
      */
     static function saveRule($format, $values, $rule_id = NULL)
     {
 
         global $wpdb;
+        $rules_table_name = $wpdb->prefix.self::RULES_TABLE_NAME;
         if (!is_null($rule_id) && !empty($rule_id)) {
-            $wpdb->update($wpdb->prefix . self::RULES_TABLE_NAME, $values, array('id' => $rule_id), $format, array('%d'));
+            $wpdb->update($rules_table_name, $values, array('id' => $rule_id), $format, array('%d'));
         } else {
-            $wpdb->insert($wpdb->prefix . self::RULES_TABLE_NAME, $values, $format);
+            $wpdb->insert($rules_table_name, $values, $format);
             $rule_id = $wpdb->insert_id;
-            $wpdb->update($wpdb->prefix . self::RULES_TABLE_NAME, array('priority' => $rule_id), array('id' => $rule_id), array('%d'), array('%d'));
+            $wpdb->update($rules_table_name, array('priority' => $rule_id), array('id' => $rule_id), array('%d'), array('%d'));
         }
         return $rule_id;
     }
@@ -293,6 +295,8 @@ class DBTable
 
 
     /**
+     * get combine rule data
+     *
      * @param $params
      * @return array|bool|object|null
      */
@@ -361,6 +365,73 @@ class DBTable
     }
 
     /**
+     * get particular rule data
+     * @param $params
+     * @param $rule_id
+     * @return array|bool|object|null
+     */
+    public static function get_rule_rows_summary( $params, $rule_id ) {
+        global $wpdb;
+        $params = array_merge( array(
+            'from'                  => '',
+            'to'                    => '',
+            'limit'                 => 5,
+            'include_amount'        => true,
+            'include_cart_discount' => false,
+        ), $params );
+        if ( empty( $params['from'] ) || empty( $params['to'] ) ) {
+            return false;
+        }
+        $summary_components = array();
+        if ( $params['include_amount'] ) {
+            $summary_components[] = 'rules_stats.discount';
+        }
+        if ( $params['include_cart_discount'] ) {
+            $summary_components[] = 'rules_stats.cart_discount';
+        }
+
+        if ( empty( $summary_components ) ) {
+            return false;
+        }
+        $summary_field = implode( '+', $summary_components );
+        $table_items = $wpdb->prefix.self::RULES_TABLE_NAME;
+        $table_stats = $wpdb->prefix.self::ORDER_ITEM_DISCOUNT_TABLE_NAME;
+
+        $query_total = $wpdb->prepare(
+            "SELECT rules.id AS rule_id, SUM({$summary_field}) AS value
+			FROM {$table_items} AS rules LEFT JOIN {$table_stats} AS rules_stats
+			ON rules.id = rules_stats.rule_id
+			WHERE rules.id={$rule_id} AND DATE(rules_stats.created_at) BETWEEN %s AND %s
+			GROUP BY rules.id
+			HAVING value>0
+			ORDER BY value DESC
+			LIMIT %d",
+            array( $params['from'], $params['to'], (int) $params['limit'] )
+        );
+        $top = $wpdb->get_col( $query_total );
+        if ( empty( $top ) ) {
+            return false;
+        }
+
+        $placeholders = array_fill( 0, count( $top ), '%d' );
+        $placeholders = implode( ', ', $placeholders );
+        $query = $wpdb->prepare(
+            "SELECT DATE(rules_stats.created_at) as date_rep, rules.id AS rule_id, CONCAT('#', rules.id, ' ', rules.title) AS title, SUM({$summary_field}) AS value
+			FROM {$table_items} AS rules LEFT JOIN {$table_stats} AS rules_stats
+			ON rules.id = rules_stats.rule_id
+			WHERE rules.id={$rule_id} AND DATE(rules_stats.created_at) BETWEEN %s AND %s AND rules.id IN ({$placeholders})
+			GROUP BY date_rep, rule_id, title
+			HAVING value>0
+			ORDER BY value DESC",
+            array_merge( array( $params['from'], $params['to'] ), $top )
+        );
+
+        $rows = $wpdb->get_results( $query );
+
+        return $rows;
+    }
+
+    /**
      * update new table structure
      */
     function updateDBTables(){
@@ -387,7 +458,7 @@ class DBTable
      */
     public function updateTable(){
         //Version of currently activated plugin
-        $current_version = '1.9.12';
+        $current_version = '2.0.1';
         //Database version - this may need upgrading.
         $installed_version = get_option('awdr_activity_log_version');
         if( $installed_version != $current_version ){

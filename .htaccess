@@ -2,9 +2,13 @@ RewriteEngine On
 
 # Redirect to HTTPS clients indicating their preference for it
 # Note: this should also send a Vary header, but doesn't due to Apache bug
+RewriteRule ^(.well-known)($|/) - [L]
+
 RewriteCond %{HTTP:Upgrade-Insecure-Requests} ^1$
 RewriteCond %{HTTP:X-Scheme} !https
 RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R,L]
+
+
 
 # BEGIN WordPress
 # The directives (lines) between `BEGIN WordPress` and `END WordPress` are

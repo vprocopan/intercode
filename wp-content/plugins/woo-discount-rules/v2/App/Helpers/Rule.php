@@ -237,6 +237,18 @@ class Rule
     }
 
     /**
+     * check rule limit reached
+     */
+    function checkRuleUsageLimits(){
+        $usage_limit = $this->getUsageLimits();
+        $used_limit = $this->getUsedLimits();
+        if($usage_limit != 0){
+            return ($usage_limit > $used_limit) ? "Active" : "Disabled";
+        }
+        return 'Active';
+    }
+
+    /**
      * Is the rule is exclusive rule
      * @return bool
      */
@@ -1038,7 +1050,7 @@ class Rule
                             $is_condition_passed = false;
                         }
                     }elseif(!isset($this->available_conditions[$type]['object'])){
-                       $is_custom_taxonomy = strpos($type, "wdr_cart_item_"); //wdr_cart_item_
+                        $is_custom_taxonomy = strpos($type, "wdr_cart_item_"); //wdr_cart_item_
                         if ( $is_custom_taxonomy === (int) 0 && $is_custom_taxonomy !== false && isset($this->available_conditions['cart_item_products_taxonomy']['object'])) {
                             $custom_taxonomy = str_replace("wdr_cart_item_", "", $type);
                             if(is_object($this->available_conditions['cart_item_products_taxonomy']['object'])){

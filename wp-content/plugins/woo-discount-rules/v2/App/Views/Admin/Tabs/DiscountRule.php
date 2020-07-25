@@ -253,25 +253,44 @@ $is_pro = \Wdr\App\Helpers\Helper::hasPro();
                                     <span class="awdr-enabled-status" style="<?php echo (!$rule_row->isEnabled()) ? 'display:none' : '';?>">
                                     <?php
                                     $rule_status = $rule_row->getRuleVaildStatus();
+                                    $check_rule_limit = $rule_row->checkRuleUsageLimits();
                                     $current_time_stamp = current_time('timestamp');
                                     $current_time = $rule_row->formatDate($current_time_stamp, $format = "Y-m-d H:i", false);
-                                    if($rule_status == 'in_future'){?>
-                                        <span class="awdr-listing-status-text"><?php _e(' - ( Will run in future)', WDR_TEXT_DOMAIN);?></span><br><?php
-                                        if(isset($current_time) && !empty($current_time)) {
-                                            ?>
-                                            <span class="awdr-text-warning"><b><?php _e('Your server current date and time:', WDR_TEXT_DOMAIN);?> </b><?php echo $current_time; ?>
-                                            </span><?php
-                                        }
+                                    if($rule_status == 'in_future'){
+                                        if ($check_rule_limit == 'Disabled') { ?>
+                                            <span class="awdr-listing-status-text"><?php _e(' - ( Not running )', WDR_TEXT_DOMAIN);?></span><br>
+                                                <span class="awdr-text-warning"><b><?php _e('Rule reached maximum usage limit', WDR_TEXT_DOMAIN);?> </b>
+                                                </span><?php
 
-                                    }elseif ($rule_status == 'expired'){?>
-                                        <span class="awdr-listing-status-text"><?php _e(' - ( Not running - validity expired)', WDR_TEXT_DOMAIN);?></span><br><?php
-                                        if(isset($current_time) && !empty($current_time)) {
-                                            ?>
-                                            <span class="awdr-text-warning"><b><?php _e('Your server current date and time:', WDR_TEXT_DOMAIN);?> </b><?php echo $current_time; ?>
-                                            </span><?php
+                                        } else{ ?>
+                                            <span class="awdr-listing-status-text"><?php _e(' - ( Will run in future)', WDR_TEXT_DOMAIN);?></span><br><?php
+                                            if(isset($current_time) && !empty($current_time)) {
+                                                ?>
+                                                <span class="awdr-text-warning"><b><?php _e('Your server current date and time:', WDR_TEXT_DOMAIN);?> </b><?php echo $current_time; ?>
+                                                </span><?php
+                                            }
                                         }
-                                    }else{?>
-                                        <span class="awdr-listing-status-text"><?php _e(' - (Running)', WDR_TEXT_DOMAIN);?></span><?php
+                                    }elseif ($rule_status == 'expired'){
+                                        if ($check_rule_limit == 'Disabled') { ?>
+                                            <span class="awdr-listing-status-text"><?php _e(' - ( Not running )', WDR_TEXT_DOMAIN);?></span><br>
+                                            <span class="awdr-text-warning"><b><?php _e('Rule reached maximum usage limit', WDR_TEXT_DOMAIN);?> </b>
+                                            </span><?php
+                                        } else{ ?>
+                                            <span class="awdr-listing-status-text"><?php _e(' - ( Not running - validity expired)', WDR_TEXT_DOMAIN);?></span><br><?php
+                                            if(isset($current_time) && !empty($current_time)) {
+                                                ?>
+                                                <span class="awdr-text-warning"><b><?php _e('Your server current date and time:', WDR_TEXT_DOMAIN);?> </b><?php echo $current_time; ?>
+                                                </span><?php
+                                            }
+                                        }
+                                    }else{
+                                        if ($check_rule_limit == 'Disabled') { ?>
+                                            <span class="awdr-listing-status-text"><?php _e(' - ( Not running )', WDR_TEXT_DOMAIN);?></span><br>
+                                            <span class="awdr-text-warning"><b><?php _e('Rule reached maximum usage limit', WDR_TEXT_DOMAIN);?> </b>
+                                            </span><?php
+                                        } else{ ?>
+                                            <span class="awdr-listing-status-text"><?php _e(' - (Running)', WDR_TEXT_DOMAIN);?></span><?php
+                                        }
                                     }?>
                                     </span>
                             </td>

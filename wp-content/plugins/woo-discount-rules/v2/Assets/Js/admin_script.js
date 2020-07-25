@@ -168,7 +168,21 @@ jQuery(document).ready(function ($) {
                 datepicker: false,
                 format: 'H:i'
             });
+        }else if(current_block != 'cart_subtotal'){
+            let promo_index = $(this).parents('.wdr-conditions-container').attr("data-index");
+            $('.promo_show_hide_' + promo_index).remove();
+        }else if(current_block == 'cart_subtotal'){
+            if(wdr_data.enable_subtotal_promo_text == '1'){
+                wdr_buildrule.wdr_clone_field({
+                    addConditionType: 'empty-promo',
+                    addFilterMethod: '.wdr-subtotal-promo-messeage-main',
+                    addRemoveIcon: '.wdr-icon-remove',
+                    ruleAppendTo: ".wdr-condition-group-items",
+                    newIndex: last_index
+                });
+            }
         }
+
         //$('.wdr-condition-date').datetimepicker();
         make_wdr_select2_search($(this).parents('.wdr-conditions-container').find('[data-field="autocomplete"]'));
         make_select2_preloaded($(this).parents('.wdr-conditions-container').find('[data-field="preloaded"]'));
@@ -489,7 +503,7 @@ jQuery(document).ready(function ($) {
      * @param $el
      */
     function make_wdr_select2_search($el) {
-        $el.select2({
+        $el.selectWoo({
             width: '100%',
             minimumInputLength: 1,
             placeholder: $el.data('placeholder'),
@@ -526,7 +540,7 @@ jQuery(document).ready(function ($) {
     /**
      * ajax edit search function on document ready
      */
-    $('.edit-filters').select2({
+    $('.edit-filters').selectWoo({
         width: '100%',
         minimumInputLength: 1,
         placeholder: wdr_data.labels.placeholders,
@@ -565,7 +579,7 @@ jQuery(document).ready(function ($) {
         $els.each(function (index, el) {
             var $el = $(el);
             var data = wdr_data.lists[$el.data('list')];
-            $el.select2({
+            $el.selectWoo({
                 width: '100%',
                 escapeMarkup: function (text) {
                     return text;
@@ -592,7 +606,7 @@ jQuery(document).ready(function ($) {
         $els.each(function (index, el) {
             var $el = $(el);
             var data = wdr_data.lists[$el.data('list')];
-            $el.select2({
+            $el.selectWoo({
                 width: '100%',
                 escapeMarkup: function (text) {
                     return text;
@@ -617,7 +631,7 @@ jQuery(document).ready(function ($) {
         var $el = $(el);
         var data = wdr_data.lists[$el.data('list')];
 
-        $el.select2({
+        $el.selectWoo({
             width: '100%',
             escapeMarkup: function (text) {
                 return text;
@@ -642,7 +656,7 @@ jQuery(document).ready(function ($) {
         var $el = $(el);
         var data = wdr_data.lists[$el.data('list')];
 
-        $el.select2({
+        $el.selectWoo({
             width: '100%',
             escapeMarkup: function (text) {
                 return text;
@@ -2389,14 +2403,51 @@ jQuery(document).ready(function ($) {
     $(document).on('change', '.awdr_mode_of_operator', function () {
         let mode_of_operator = $(this).val();
         if(mode_of_operator == "variation"){
-            $('.awdr-example').html(wdr_data.localization_data.mode_variation_cumulative_example)
+            $('.awdr-example').html(wdr_data.localization_data.mode_variation_cumulative_example);
         }else{
-            $('.awdr-example').html('')
+            $('.awdr-example').html('');
         }
     })
     $(document).on('click', '.awdr-hidden-search', function () {
         let search_string = $('.awdr-hidden-name').val();
         $('.wdr-rule-search-key').val(search_string);
         $('#wdr-search-top').submit();
+    });
+
+    /**
+     * Rule limit dynamic message
+     */
+    $(document).on('change', '#select_usage_limits', function () {
+        let selected_limit = $( "#select_usage_limits option:selected" ).text();
+        if( selected_limit == "Unlimited"){
+            $('.usage-limits-display').hide();
+            $('.awdr-rule-limit-disabled-outer .rule_limit_msg_outer').hide();
+            $('.awdr-rule-limit-disabled').hide();
+        }else{
+            $('.usage-limits-display').show();
+            var rule_applied_total = $('.awdr-used-limit-total').html();
+            if(selected_limit <= parseInt(rule_applied_total)){
+                $('.awdr-rule-limit-disabled').hide();
+                $('.awdr-rule-limit-disabled-outer').show();
+                $('.awdr-rule-limit-disabled-outer .rule_limit_msg_outer').html(wdr_data.localization_data.invalid_rule_limit);
+            }else{
+                $('.awdr-rule-limit-disabled').hide();
+                $('.awdr-rule-limit-disabled-outer').hide();
+            }
+        }
+       // awdrRuleDateValidationMessage();
+    });
+
+    /**
+     * Import File validation
+     */
+    $("#awdr-import-csv").on("submit", function () {
+        var fileType = ".csv";
+        var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + fileType + ")$");
+        if (!regex.test($("#awdr-file-uploader").val().toLowerCase())) {
+            $("#awdr-upload-response").html(wdr_data.localization_data.invalid_file_type);
+            return false;
+        }
+        return true;
     });
 });
